@@ -1,12 +1,10 @@
 package service;
 
-import model.Query;
+import model.*;
 import service.cleanup.BaseCleaner;
 import service.cleanup.Cleaner;
-import model.Document;
-import model.RetroIndex;
-import model.Token;
 import org.jsoup.Jsoup;
+import service.query.BaseQuery;
 import service.token.BaseTokenisation;
 import service.token.Tokenisation;
 import service.vector.BaseVectorisation;
@@ -20,7 +18,13 @@ public class Index {
     Cleaner cleaner = new BaseCleaner();
     Tokenisation tokeniser = new BaseTokenisation();
     Vectorisation vectoriser = new BaseVectorisation();
+    BaseQuery baseQuery = new BaseQuery();
     RetroIndex retroIndex = new RetroIndex();
+    TFIDFCache tfidfCache = new TFIDFCache();
+
+    public RetroIndex getRetroIndex() {
+        return retroIndex;
+    }
 
     public Document getDocumentFromLink(final String link) {
         Document res = new Document();
@@ -28,7 +32,6 @@ public class Index {
         res.setLink(link);
         try {
             res.setHtml(Jsoup.connect(link).get().html());
-            res.setHtml("The blue rabbit is fishing in a blue river.");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -41,10 +44,12 @@ public class Index {
 
         res.setTokens(hashTokens);
 
+        indexDocument(res);
+
         return res;
     }
 
-    public Query getQueryFromString(final String string) {
+    private Query getQueryFromString(final String string) {
         Query res = new Query();
 
         String text = cleaner.clean(string);
@@ -56,6 +61,10 @@ public class Index {
         res.setTokens(hashTokens);
 
         return res;
+    }
+
+    public List<Document> processQuery(String query) {
+        return baseQuery.processQuery(getQueryFromString(query), retroIndex);
     }
 
     public void indexDocument(final Document doc) {
