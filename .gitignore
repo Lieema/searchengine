@@ -96,3 +96,4 @@ fabric.properties
 javaWeek/.idea/workspace.xml
 javaWeek/.idea/*
 .idea/*
+*.iml
