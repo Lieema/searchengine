@@ -12,12 +12,10 @@ public abstract class Vectorisation {
 
         int index = 0;
 
-        for (String str :
-                tokens) {
+        for (String str : tokens) {
             Boolean isAlreadyIn = false;
 
-            for (Token actuToken :
-                    res) {
+            for (Token actuToken : res) {
                 if (actuToken.toString() != null && actuToken.toString().equals(str)) {
                     actuToken.getPositions().add(index);
                     isAlreadyIn = true;
