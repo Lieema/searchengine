@@ -5,7 +5,6 @@ import model.*;
 import service.cleanup.BaseCleaner;
 import service.cleanup.Cleaner;
 import org.jsoup.Jsoup;
-import service.compute.MathIdf;
 import service.query.BaseQuery;
 import service.token.BaseTokenisation;
 import service.token.Tokenisation;
@@ -13,7 +12,6 @@ import service.vector.BaseVectorisation;
 import service.vector.Vectorisation;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Index extends Logger {
@@ -21,8 +19,9 @@ public class Index extends Logger {
     Tokenisation tokeniser = new BaseTokenisation();
     Vectorisation vectoriser = new BaseVectorisation();
     BaseQuery baseQuery = new BaseQuery();
+
+
     RetroIndex retroIndex = new RetroIndex();
-    TFIDFCache idfCache = new TFIDFCache();
 
     public RetroIndex getRetroIndex() {
         return retroIndex;
@@ -66,23 +65,10 @@ public class Index extends Logger {
     }
 
     public List<Document> processQuery(String query) {
-        return baseQuery.processQuery(getQueryFromString(query), retroIndex, idfCache);
+        return baseQuery.processQuery(getQueryFromString(query), retroIndex);
     }
 
     public void indexDocument(final Document doc) {
-
-        for (Token token: doc.getTokens()) {
-            if (retroIndex.getIndexHashMap().containsKey(token.toString())) {
-                retroIndex.getIndexHashMap().get(token.toString()).add(doc);
-            }
-            else {
-                retroIndex.getIndexHashMap().put(token.toString(), new ArrayList<Document>() { { add(doc); } });
-            }
-        }
-        retroIndex.countDocument();
-
-        for (Token token: doc.getTokens()) {
-            idfCache.putInCache(token.getWord(), MathIdf.computeIDF((double)retroIndex.getDocumentNumber(), (double) retroIndex.getIndexHashMap().get(token.getWord()).size()));
-        }
+        retroIndex.addDocument(doc);
     }
 }

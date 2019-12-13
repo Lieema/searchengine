@@ -12,7 +12,7 @@ import java.util.*;
 
 public abstract class Query extends Logger {
 
-    public List<Document> processQuery(model.Query query, RetroIndex retroIndex, TFIDFCache idfcache) {
+    public List<Document> processQuery(model.Query query, RetroIndex retroIndex) {
         //tf.idf vector of query
         List<Double> v1 = new ArrayList<>();
 
@@ -24,13 +24,13 @@ public abstract class Query extends Logger {
 
         for (Token token: query.getTokens()) {
             //check if token exists in retroindex
-            if (!retroIndex.getIndexHashMap().containsKey(token.toString()))
+            if (!retroIndex.contains(token.getWord()))
                 continue;
 
-            List<Document> docs = retroIndex.getIndexHashMap().get(token.toString());
+            List<Document> docs = retroIndex.getDocuments(token.getWord());
 
             //compute idf for current query token
-            Double actuIDF = idfcache.getIdf(token.getWord());
+            Double actuIDF = retroIndex.getTokenIdf(token.getWord());
 
             //add tf.idf to first vector
             v1.add(token.getFrequency() * actuIDF);
@@ -39,7 +39,7 @@ public abstract class Query extends Logger {
         }
 
         // Compute TfIdf normalized vector
-        checkedDocument.stream().forEach(doc -> v2.put(doc, createDocumentTfIdfVector(doc, query.getTokens(), idfcache)));
+        checkedDocument.stream().forEach(doc -> v2.put(doc, createDocumentTfIdfVector(doc, query.getTokens(), retroIndex)));
 
         //normalize each vectors
         MathIdf.normalize(v1);
@@ -69,7 +69,7 @@ public abstract class Query extends Logger {
         return sortedStats;
     }
 
-    private List<Double> createDocumentTfIdfVector(Document doc, List<Token> tokens, TFIDFCache idfcache) {
+    private List<Double> createDocumentTfIdfVector(Document doc, List<Token> tokens, RetroIndex retroindex) {
         List<Double> vector = new ArrayList<>();
 
         Map<String, Double> tokenFrequency = new HashMap<>();
@@ -77,7 +77,7 @@ public abstract class Query extends Logger {
 
         tokens.stream().forEach(token -> {
             vector.add(tokenFrequency.containsKey(token.getWord()) ?
-                    idfcache.getIdf(token.getWord()) * tokenFrequency.get(token.getWord()) : 0.d);
+                    retroindex.getTokenIdf(token.getWord()) * tokenFrequency.get(token.getWord()) : 0.d);
         });
 
         return MathIdf.normalize(vector);

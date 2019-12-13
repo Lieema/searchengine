@@ -9,10 +9,6 @@ public class TFIDFCache {
         idfHashMap = new HashMap<>();
     }
 
-    public void resetCache() {
-        idfHashMap.clear();
-    }
-
     public void putInCache(String token, Double idf) {
         idfHashMap.put(token, idf);
     }
