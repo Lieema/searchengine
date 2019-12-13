@@ -1,5 +1,7 @@
 package service.indexService;
 
+import annotation.NotNull;
+import annotation.Pure;
 import entity.RetroIndex;
 import logger.Logger;
 import model.*;
@@ -13,8 +15,14 @@ import java.io.IOException;
 import java.util.List;
 
 public abstract class Indexer extends Logger {
+
+    @NotNull
     protected Cleaner cleaner;
+
+    @NotNull
     protected Tokenizer tokeniser;
+
+    @NotNull
     protected Vectorizer vectoriser;
 
     // BEGIN TMP
@@ -26,7 +34,8 @@ public abstract class Indexer extends Logger {
         defaultQueryService.setRetroIndex(retroIndex);
     }
 
-    public Document getDocumentFromLink(final String link) {
+    @Pure
+    public Document getDocumentFromLink(@NotNull final String link) {
         logger.info("Enter getDocumentFromLink with" + link);
         Document res = new Document();
 
@@ -61,6 +70,7 @@ public abstract class Indexer extends Logger {
     }
     // END TMP
 
+    @Pure
     public void indexDocument(final Document doc) {
         logger.info("Send message to index document");
         retroIndex.addDocument(doc);

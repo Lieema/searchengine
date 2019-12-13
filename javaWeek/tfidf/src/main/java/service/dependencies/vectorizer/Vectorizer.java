@@ -1,5 +1,7 @@
 package service.dependencies.vectorizer;
 
+import annotation.NotNull;
+import annotation.Pure;
 import logger.Logger;
 import model.Token;
 
@@ -8,7 +10,9 @@ import java.util.Collections;
 import java.util.List;
 
 public abstract class Vectorizer extends Logger {
-    public List<Token> convert(List<String> tokens) {
+
+    @Pure
+    public List<Token> convert(@NotNull final List<String> tokens) {
         List<Token> res = new ArrayList<>();
 
         int index = 0;

@@ -1,5 +1,8 @@
 package service.queryService;
 
+import annotation.Mutate;
+import annotation.NotNull;
+import annotation.Pure;
 import logger.Logger;
 import model.Document;
 import entity.RetroIndex;
@@ -14,16 +17,25 @@ import java.util.*;
 
 public abstract class Query extends Logger {
 
+    @NotNull
     protected Cleaner cleaner;
+
+    @NotNull
     protected Tokenizer tokeniser;
+
+    @NotNull
     protected Vectorizer vectoriser;
+
+    @NotNull
     protected RetroIndex retroIndex;
 
-    public void setRetroIndex(RetroIndex retroIndex) {
+    @Mutate
+    public void setRetroIndex(@NotNull final RetroIndex retroIndex) {
         this.retroIndex = retroIndex;
     }
 
-    public List<Document> processQuery(final String request) {
+    @Pure
+    public List<Document> processQuery(@NotNull final String request) {
         logger.info("Enter processQuery: " + request);
         final model.Query query = new model.Query();
 
@@ -38,10 +50,11 @@ public abstract class Query extends Logger {
 
         query.tokens = hashTokens;
 
-        return processQuery(query, retroIndex);
+        return processQuery(query);
     }
 
-    protected List<Document> processQuery(model.Query query, RetroIndex retroIndex) {
+    @Pure
+    protected List<Document> processQuery(@NotNull final model.Query query) {
         //tf.idf vectorizer of queryService
         List<Double> v1 = new ArrayList<>();
 
@@ -73,7 +86,7 @@ public abstract class Query extends Logger {
         logger.info(checkedDocument.size() + " document(s) are concerned by query");
 
         logger.trace("Normalize documents tfidf vector");
-        checkedDocument.stream().forEach(doc -> v2.put(doc, retroIndex.createDocumentTfIdfVector(doc, query.tokens, retroIndex)));
+        checkedDocument.stream().forEach(doc -> v2.put(doc, retroIndex.createDocumentTfIdfVector(doc, query.tokens)));
 
         logger.trace("Normalize query tfidf vector");
         MathIdf.normalize(v1);
