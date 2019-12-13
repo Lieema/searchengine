@@ -1,4 +1,4 @@
-package service.vector;
+package service.dependencies.vectorizer;
 
 import logger.Logger;
 import model.Token;
@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public abstract class Vectorisation extends Logger {
+public abstract class Vectorizer extends Logger {
     public List<Token> convert(List<String> tokens) {
         List<Token> res = new ArrayList<>();
 
@@ -18,7 +18,7 @@ public abstract class Vectorisation extends Logger {
 
             for (Token actuToken : res) {
                 if (actuToken.toString() != null && actuToken.toString().equals(str)) {
-                    actuToken.getPositions().add(index);
+                    actuToken.positions.add(index);
                     isAlreadyIn = true;
                 }
             }
@@ -28,10 +28,10 @@ public abstract class Vectorisation extends Logger {
             }
 
             Token tok = new Token(str);
-            tok.setFrequency((double)Collections.frequency(tokens, str) / (double)tokens.size());
+            tok.frequency = (double)Collections.frequency(tokens, str) / (double)tokens.size();
 
-            //get position, add the token if not already in, otherwise add it's position to existing token
-            tok.getPositions().add(index);
+            //get position, add the tokenizer if not already in, otherwise add it's position to existing tokenizer
+            tok.positions.add(index);
 
             res.add(tok);
             ++index;

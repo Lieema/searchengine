@@ -1,4 +1,4 @@
-package service.token;
+package service.dependencies.tokenizer;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -6,11 +6,11 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-public class BaseTokenisation extends Tokenisation {
+public class DefaultTokenizer extends Tokenizer {
     private List<String> stopWords;
     private HashMap<String, String> synonyms;
 
-    public BaseTokenisation() {
+    public DefaultTokenizer() {
         initStopWords();
         initSynonyms();
     }

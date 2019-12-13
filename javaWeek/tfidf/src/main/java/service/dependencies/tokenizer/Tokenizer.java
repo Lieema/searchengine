@@ -1,10 +1,10 @@
-package service.token;
+package service.dependencies.tokenizer;
 
 import logger.Logger;
 
 import java.util.*;
 
-public abstract class Tokenisation extends Logger {
+public abstract class Tokenizer extends Logger {
     public abstract List<String> getStopWords();
     public abstract HashMap<String, String> getSynonyms();
 

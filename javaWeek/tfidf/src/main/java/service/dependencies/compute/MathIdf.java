@@ -1,4 +1,4 @@
-package service.compute;
+package service.dependencies.compute;
 
 import java.util.List;
 
