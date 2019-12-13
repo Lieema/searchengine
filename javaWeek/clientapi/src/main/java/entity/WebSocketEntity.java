@@ -1,7 +1,5 @@
 package entity;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import helper.ConvertJsonStringObject;
 import model.Message;
 import org.java_websocket.client.WebSocketClient;
