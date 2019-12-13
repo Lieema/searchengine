@@ -2,14 +2,14 @@ package service.compute;
 
 import java.util.List;
 
-public class ComputeIDF {
+public class MathIdf {
     public static Double computeIDF(final Double corpusSize, final Double matchingNumber) {
         Double res = Math.log(corpusSize / ((double)1 + matchingNumber));
 
         return res;
     }
 
-    public List<Double> normalize(List<Double> w2v){
+    public static List<Double> normalize(List<Double> w2v){
         Double norm = 0.0;
         for(Double x: w2v){
             norm += x*x;
@@ -21,7 +21,7 @@ public class ComputeIDF {
         return w2v;
     }
 
-    public double dotProd(List<Double> a, List<Double> b){
+    public static double dotProd(List<Double> a, List<Double> b){
         if(a.size() != b.size()){
             throw new IllegalArgumentException("The dimensions have to be equal!");
         }
@@ -32,7 +32,7 @@ public class ComputeIDF {
         return sum;
     }
 
-    public double distance(List<Double> a, List<Double> b) {
+    public static double distance(List<Double> a, List<Double> b) {
         if(a.size() != b.size()){
             throw new IllegalArgumentException("The dimensions have to be equal!");
         }
