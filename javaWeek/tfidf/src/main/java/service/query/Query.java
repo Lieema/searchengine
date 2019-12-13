@@ -1,5 +1,6 @@
 package service.query;
 
+import logger.Logger;
 import model.Document;
 import model.RetroIndex;
 import model.TFIDFCache;
@@ -9,7 +10,8 @@ import util.Pair;
 
 import java.util.*;
 
-public abstract class Query {
+public abstract class Query extends Logger {
+
     public List<Document> processQuery(model.Query query, RetroIndex retroIndex, TFIDFCache idfcache) {
         //tf.idf vector of query
         List<Double> v1 = new ArrayList<>();

@@ -1,12 +1,13 @@
 package service.vector;
 
+import logger.Logger;
 import model.Token;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public abstract class Vectorisation {
+public abstract class Vectorisation extends Logger {
     public List<Token> convert(List<String> tokens) {
         List<Token> res = new ArrayList<>();
 

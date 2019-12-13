@@ -1,5 +1,6 @@
 package service;
 
+import logger.Logger;
 import model.*;
 import service.cleanup.BaseCleaner;
 import service.cleanup.Cleaner;
@@ -15,7 +16,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Index {
+public class Index extends Logger {
     Cleaner cleaner = new BaseCleaner();
     Tokenisation tokeniser = new BaseTokenisation();
     Vectorisation vectoriser = new BaseVectorisation();
