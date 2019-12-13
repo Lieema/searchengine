@@ -1,5 +1,8 @@
 package entity;
 
+import annotation.Mutate;
+import annotation.NotNull;
+import annotation.Pure;
 import model.Document;
 import model.Token;
 import service.dependencies.compute.MathIdf;
@@ -10,27 +13,36 @@ import java.util.List;
 import java.util.Map;
 
 public class RetroIndex {
+
+    @NotNull
     private HashMap<String, List<Document>> indexHashMap = new HashMap<>();
+
+    @NotNull
     private List<Document> documents = new ArrayList<>();
 
+    @NotNull
     private TFIDFCache idfCache = new TFIDFCache();
 
-    public Integer getDocumentNumber() {
+    @Pure
+    public @NotNull Integer getDocumentNumber() {
         return documents.size();
     }
 
-    public List<Document> getDocuments(String token) {
+    @Pure
+    public @NotNull List<Document> getDocuments(@NotNull final String token) {
         if (!contains(token))
             return new ArrayList<>();
 
         return indexHashMap.get(token);
     }
 
-    public boolean contains(String token) {
+    @Pure
+    public boolean contains(@NotNull final String token) {
         return indexHashMap.containsKey(token);
     }
 
-    public void addDocument(Document doc) {
+    @Mutate
+    public void addDocument(@NotNull final Document doc) {
 
         if (documents.contains(doc))
             return;
@@ -50,11 +62,14 @@ public class RetroIndex {
         });
     }
 
-    public Double getTokenIdf(String token) {
+    @Pure
+    public @NotNull Double getTokenIdf(@NotNull final String token) {
         return idfCache.getIdf(token);
     }
 
-    public List<Double> createDocumentTfIdfVector(Document doc, List<Token> tokens, RetroIndex retroindex) {
+    @Pure
+    public @NotNull List<Double> createDocumentTfIdfVector(@NotNull final Document doc,
+                                                           @NotNull final List<Token> tokens) {
         List<Double> vector = new ArrayList<>();
 
         Map<String, Double> tokenFrequency = new HashMap<>();

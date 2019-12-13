@@ -1,5 +1,7 @@
 package service.dependencies.tokenizer;
 
+import annotation.NotNull;
+import annotation.Pure;
 import logger.Logger;
 
 import java.util.*;
@@ -8,12 +10,12 @@ public abstract class Tokenizer extends Logger {
     public abstract List<String> getStopWords();
     public abstract HashMap<String, String> getSynonyms();
 
-    public List<String> getTokens(final String text) {
+    @Pure
+    public List<String> getTokens(@NotNull final String text) {
         List<String> res = new ArrayList<>();
         List<String> sliced = Arrays.asList(text.split(" "));
 
-        for (String token :
-                sliced) {
+        for (String token : sliced) {
             //Keep only word characters
             String tempToken = token.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
 
@@ -36,6 +38,7 @@ public abstract class Tokenizer extends Logger {
         return res;
     }
 
+    @Pure
     public String applyStemming(final String word) {
         return word.replaceAll("(ing$)|(s$)", "");
     }

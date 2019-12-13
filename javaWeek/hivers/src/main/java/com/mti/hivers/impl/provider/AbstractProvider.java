@@ -15,8 +15,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
-
 public abstract class AbstractProvider<BEAN_TYPE> implements Provider<BEAN_TYPE> {
 
     @NotNull

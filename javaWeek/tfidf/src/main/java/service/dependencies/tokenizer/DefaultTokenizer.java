@@ -1,5 +1,9 @@
 package service.dependencies.tokenizer;
 
+import annotation.Mutate;
+import annotation.NotNull;
+import annotation.Pure;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -7,7 +11,10 @@ import java.util.HashMap;
 import java.util.List;
 
 public class DefaultTokenizer extends Tokenizer {
+    @NotNull
     private List<String> stopWords;
+
+    @NotNull
     private HashMap<String, String> synonyms;
 
     public DefaultTokenizer() {
@@ -15,6 +22,7 @@ public class DefaultTokenizer extends Tokenizer {
         initSynonyms();
     }
 
+    @Mutate
     private void initStopWords() {
         ClassLoader cl = getClass().getClassLoader();
         File file = new File(cl.getResource("stopwords.txt").getFile());
@@ -39,6 +47,7 @@ public class DefaultTokenizer extends Tokenizer {
         stopWords = res;
     }
 
+    @Mutate
     private void initSynonyms() {
         ClassLoader cl = getClass().getClassLoader();
         File file = new File(cl.getResource("synonyms.csv").getFile());
@@ -72,11 +81,13 @@ public class DefaultTokenizer extends Tokenizer {
         synonyms = res;
     }
 
+    @Pure
     @Override
     public List<String> getStopWords() {
         return stopWords;
     }
 
+    @Pure
     @Override
     public HashMap<String, String> getSynonyms() {
         return synonyms;
