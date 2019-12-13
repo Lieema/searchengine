@@ -1,4 +1,4 @@
-package com.mti.hivers.exception;
+package exception;
 
 public class ProxyTypeNotAnInterfaceException extends RuntimeException {
 

@@ -3,7 +3,7 @@ package com.mti.hivers.impl.provider;
 import annotation.NotNull;
 import annotation.Nullable;
 import annotation.Pure;
-import com.mti.hivers.validation.Fault;
+import validation.Fault;
 
 import java.util.Collections;
 import java.util.function.Supplier;

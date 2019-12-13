@@ -1,7 +1,7 @@
-package com.mti.hivers.validation;
+package validation;
 
-import com.mti.hivers.exception.InvalidArgumentException;
-import com.mti.hivers.exception.InvalidValueException;
+import exception.InvalidArgumentException;
+import exception.InvalidValueException;
 
 import java.util.Collection;
 import java.util.Objects;

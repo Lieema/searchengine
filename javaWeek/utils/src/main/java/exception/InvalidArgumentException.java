@@ -1,6 +1,6 @@
-package com.mti.hivers.exception;
+package exception;
 
-import com.mti.hivers.validation.Fault;
+import validation.Fault;
 
 public class InvalidArgumentException extends RuntimeException
 {

@@ -1,4 +1,4 @@
-package com.mti.hivers.exception;
+package exception;
 
 public enum ExceptionMessages {
     BEAN_NOT_FOUND("No bean of the given type has been found."),

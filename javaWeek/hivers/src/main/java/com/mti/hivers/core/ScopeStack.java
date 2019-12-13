@@ -3,12 +3,12 @@ package com.mti.hivers.core;
 import annotation.Mutate;
 import annotation.NotNull;
 import annotation.Pure;
-import com.mti.hivers.exception.InvalidScopePopException;
+import exception.InvalidScopePopException;
 
 import java.util.Deque;
 import java.util.Optional;
 
-import static com.mti.hivers.validation.Fault.NULL;
+import static validation.Fault.NULL;
 
 @Mutate
 public interface ScopeStack {

@@ -4,7 +4,7 @@ import annotation.Mutate;
 import annotation.NotNull;
 import annotation.Nullable;
 import com.mti.hivers.core.Aspect;
-import com.mti.hivers.validation.Fault;
+import validation.Fault;
 
 import java.util.Arrays;
 import java.util.function.Supplier;

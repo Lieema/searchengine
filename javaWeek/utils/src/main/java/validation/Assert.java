@@ -1,4 +1,4 @@
-package com.mti.hivers.validation;
+package validation;
 
 import java.util.function.Supplier;
 

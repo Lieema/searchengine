@@ -3,20 +3,18 @@ package com.mti.hivers.impl.provider;
 import annotation.NotNull;
 import com.mti.hivers.core.Aspect;
 import com.mti.hivers.core.Provider;
-import com.mti.hivers.exception.ProxyTypeNotAnInterfaceException;
 import com.mti.hivers.impl.aspect.After;
 import com.mti.hivers.impl.aspect.Around;
 import com.mti.hivers.impl.aspect.Before;
-import com.mti.hivers.validation.Assert;
-import com.mti.hivers.validation.Fault;
+import exception.ProxyTypeNotAnInterfaceException;
+import validation.Assert;
+import validation.Fault;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.mti.hivers.validation.Fault.NO_NULL_IN_COLLECTION;
-import static com.mti.hivers.validation.Fault.NULL;
 
 
 public abstract class AbstractProvider<BEAN_TYPE> implements Provider<BEAN_TYPE> {
@@ -30,8 +28,8 @@ public abstract class AbstractProvider<BEAN_TYPE> implements Provider<BEAN_TYPE>
     public AbstractProvider(@NotNull final Class<BEAN_TYPE> providedClass,
                             @NotNull final List<Aspect<BEAN_TYPE>> aspectList) {
 
-        this.providedClass = NULL.validate(providedClass, "providedClass");
-        this.aspectList.addAll(Fault.validate(aspectList, "aspectList", NULL, NO_NULL_IN_COLLECTION));
+        this.providedClass = Fault.NULL.validate(providedClass, "providedClass");
+        this.aspectList.addAll(Fault.validate(aspectList, "aspectList", Fault.NULL, Fault.NO_NULL_IN_COLLECTION));
     }
 
     private List<Aspect<BEAN_TYPE>> aspectsOfType(final Class<?> aspectType, final boolean reversed) {
