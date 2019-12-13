@@ -16,7 +16,7 @@ import static java.util.Comparator.comparingDouble;
 public abstract class Query {
     public abstract ComputeIDF getComputeIDF();
 
-    public List<Document> processQuery(model.Query query, RetroIndex retroIndex) {
+    public List<Document> processQuery(model.Query query, RetroIndex retroIndex, TFIDFCache idfcache) {
         //tf.idf vector of query
         List<Double> v1 = new ArrayList<>();
 
@@ -26,8 +26,6 @@ public abstract class Query {
         //tf.idf vectors for each documents
         HashMap<Document, List<Double>> v2 = new HashMap<>();
 
-        HashMap<String, Double> tokenIdf = new HashMap<>();
-
         for (Token token: query.getTokens()) {
             //check if token exists in retroindex
             if (!retroIndex.getIndexHashMap().containsKey(token.toString()))
@@ -36,37 +34,16 @@ public abstract class Query {
             List<Document> docs = retroIndex.getIndexHashMap().get(token.toString());
 
             //compute idf for current query token
-            Double actuIDF = getComputeIDF().computeIDF((double)retroIndex.getDocumentNumber(), (double)docs.size());
-            tokenIdf.put(token.getWord(), actuIDF);
+            Double actuIDF = idfcache.getIdf(token.getWord());
 
             //add tf.idf to first vector
             v1.add(token.getFrequency() * actuIDF);
 
             checkedDocument.addAll(docs);
-
-            /*
-
-            //foreach document linked to the current token
-            for (Document actuDoc : docs) {
-                //foreach token in this document
-                for (Token docToken : actuDoc.getTokens()) {
-                    //look if our token is this docToken
-                    //if so add it to v2, otherwise do nothing
-                    if (token.toString().equals(docToken.toString())) {
-                        if (v2.get(actuDoc) != null) {
-                            v2.get(actuDoc).add(docToken.getFrequency() * actuIDF);
-                        }
-                        else {
-                            v2.put(actuDoc, new ArrayList<Double>() { { add(docToken.getFrequency() * actuIDF); } });
-                        }
-                    }
-                }
-            }
-            */
         }
 
         // Compute TfIdf normalized vector
-        checkedDocument.stream().forEach(doc -> v2.put(doc, createDocumentTfIdfVector(doc, query.getTokens(), tokenIdf)));
+        checkedDocument.stream().forEach(doc -> v2.put(doc, createDocumentTfIdfVector(doc, query.getTokens(), idfcache)));
 
         //normalize each vectors
         getComputeIDF().normalize(v1);
@@ -96,7 +73,7 @@ public abstract class Query {
         return sortedStats;
     }
 
-    private List<Double> createDocumentTfIdfVector(Document doc, List<Token> tokens, HashMap<String, Double> tokenIdf) {
+    private List<Double> createDocumentTfIdfVector(Document doc, List<Token> tokens, TFIDFCache idfcache) {
         List<Double> vector = new ArrayList<>();
 
         Map<String, Double> tokenFrequency = new HashMap<>();
@@ -104,7 +81,7 @@ public abstract class Query {
 
         tokens.stream().forEach(token -> {
             vector.add(tokenFrequency.containsKey(token.getWord()) ?
-                    tokenIdf.get(token.getWord()) * tokenFrequency.get(token.getWord()) : 0.d);
+                    idfcache.getIdf(token.getWord()) * tokenFrequency.get(token.getWord()) : 0.d);
         });
 
         return getComputeIDF().normalize(vector);

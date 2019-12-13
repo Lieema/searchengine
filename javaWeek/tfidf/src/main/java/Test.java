@@ -12,6 +12,6 @@ public class Test {
         Document doc5 = index.getDocumentFromLink("https://en.wikipedia.org/wiki/Planet");
         Document doc6 = index.getDocumentFromLink("https://en.wikipedia.org/wiki/Nothing");
         Document doc7 = index.getDocumentFromLink("https://en.wikipedia.org/wiki/Water");
-        System.out.println(index.processQuery("hare rabbit water car"));
+        System.out.println(index.processQuery("hare rabbit water car hare hare"));
     }
 }

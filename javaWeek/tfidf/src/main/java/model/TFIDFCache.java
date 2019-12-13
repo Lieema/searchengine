@@ -3,13 +3,22 @@ package model;
 import java.util.HashMap;
 
 public class TFIDFCache {
-    HashMap<String, Double> tfidfHashMap;
+    HashMap<String, Double> idfHashMap;
 
     public TFIDFCache() {
-        tfidfHashMap = new HashMap<>();
+        idfHashMap = new HashMap<>();
     }
 
-    public HashMap<String, Double> getTfidfHashMap() {
-        return tfidfHashMap;
+    public void resetCache() {
+        idfHashMap.clear();
     }
+
+    public void putInCache(String token, Double idf) {
+        idfHashMap.put(token, idf);
+    }
+
+    public Double getIdf(String token) {
+        return idfHashMap.get(token);
+    }
+
 }

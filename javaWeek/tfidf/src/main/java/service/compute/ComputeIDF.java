@@ -3,7 +3,7 @@ package service.compute;
 import java.util.List;
 
 public class ComputeIDF {
-    public Double computeIDF(final Double corpusSize, final Double matchingNumber) {
+    public static Double computeIDF(final Double corpusSize, final Double matchingNumber) {
         Double res = Math.log(corpusSize / ((double)1 + matchingNumber));
 
         return res;
