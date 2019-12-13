@@ -1,8 +1,8 @@
 package com.mti.hivers.impl.provider;
 
-import com.mti.hivers.annotation.Mutate;
-import com.mti.hivers.annotation.NotNull;
-import com.mti.hivers.annotation.Nullable;
+import annotation.Mutate;
+import annotation.NotNull;
+import annotation.Nullable;
 import com.mti.hivers.core.Aspect;
 import com.mti.hivers.validation.Fault;
 

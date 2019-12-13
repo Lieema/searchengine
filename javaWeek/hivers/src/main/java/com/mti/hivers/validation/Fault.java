@@ -1,6 +1,5 @@
 package com.mti.hivers.validation;
 
-import com.mti.hivers.annotation.NotNull;
 import com.mti.hivers.exception.InvalidArgumentException;
 import com.mti.hivers.exception.InvalidValueException;
 

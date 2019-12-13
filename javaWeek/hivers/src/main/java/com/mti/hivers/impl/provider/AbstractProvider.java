@@ -1,6 +1,6 @@
 package com.mti.hivers.impl.provider;
 
-import com.mti.hivers.annotation.NotNull;
+import annotation.NotNull;
 import com.mti.hivers.core.Aspect;
 import com.mti.hivers.core.Provider;
 import com.mti.hivers.exception.ProxyTypeNotAnInterfaceException;

@@ -13,4 +13,11 @@ public class Token {
         this.word = word;
         positions = new ArrayList<>();
     }
+
+    @Override
+    public String toString() {
+        return "Token{" +
+                "word='" + word + '\'' +
+                '}';
+    }
 }

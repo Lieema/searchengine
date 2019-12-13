@@ -1,8 +1,9 @@
 package com.mti.hivers.core;
 
-import com.mti.hivers.annotation.Mutate;
-import com.mti.hivers.annotation.NotNull;
-import com.mti.hivers.annotation.Pure;
+
+import annotation.Mutate;
+import annotation.NotNull;
+import annotation.Pure;
 
 import java.util.List;
 import java.util.Optional;

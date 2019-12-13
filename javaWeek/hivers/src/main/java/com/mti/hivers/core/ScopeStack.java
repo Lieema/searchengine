@@ -1,9 +1,8 @@
 package com.mti.hivers.core;
 
-import com.mti.hivers.annotation.Mutate;
-import com.mti.hivers.annotation.NotNull;
-import com.mti.hivers.annotation.Pure;
-import com.mti.hivers.exception.InvalidArgumentException;
+import annotation.Mutate;
+import annotation.NotNull;
+import annotation.Pure;
 import com.mti.hivers.exception.InvalidScopePopException;
 
 import java.util.Deque;

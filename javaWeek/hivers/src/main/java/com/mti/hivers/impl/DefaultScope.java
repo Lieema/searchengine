@@ -1,6 +1,6 @@
 package com.mti.hivers.impl;
 
-import com.mti.hivers.annotation.NotNull;
+import annotation.NotNull;
 import com.mti.hivers.core.Provider;
 import com.mti.hivers.core.Scope;
 

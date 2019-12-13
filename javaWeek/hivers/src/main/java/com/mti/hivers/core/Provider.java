@@ -1,7 +1,7 @@
 package com.mti.hivers.core;
 
-import com.mti.hivers.annotation.NotNull;
-import com.mti.hivers.annotation.Nullable;
+import annotation.NotNull;
+import annotation.Nullable;
 
 import java.util.List;
 
