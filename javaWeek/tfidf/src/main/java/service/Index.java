@@ -4,7 +4,7 @@ import model.*;
 import service.cleanup.BaseCleaner;
 import service.cleanup.Cleaner;
 import org.jsoup.Jsoup;
-import service.compute.ComputeIDF;
+import service.compute.MathIdf;
 import service.query.BaseQuery;
 import service.token.BaseTokenisation;
 import service.token.Tokenisation;
@@ -13,7 +13,6 @@ import service.vector.Vectorisation;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class Index {
@@ -82,7 +81,7 @@ public class Index {
         retroIndex.countDocument();
 
         for (Token token: doc.getTokens()) {
-            idfCache.putInCache(token.getWord(), ComputeIDF.computeIDF((double)retroIndex.getDocumentNumber(), (double) retroIndex.getIndexHashMap().get(token.getWord()).size()));
+            idfCache.putInCache(token.getWord(), MathIdf.computeIDF((double)retroIndex.getDocumentNumber(), (double) retroIndex.getIndexHashMap().get(token.getWord()).size()));
         }
     }
 }

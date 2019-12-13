@@ -4,18 +4,12 @@ import model.Document;
 import model.RetroIndex;
 import model.TFIDFCache;
 import model.Token;
-import service.compute.ComputeIDF;
+import service.compute.MathIdf;
 import util.Pair;
 
 import java.util.*;
-import java.util.stream.Collectors;
-
-import static java.util.Comparator.*;
-import static java.util.Comparator.comparingDouble;
 
 public abstract class Query {
-    public abstract ComputeIDF getComputeIDF();
-
     public List<Document> processQuery(model.Query query, RetroIndex retroIndex, TFIDFCache idfcache) {
         //tf.idf vector of query
         List<Double> v1 = new ArrayList<>();
@@ -46,12 +40,12 @@ public abstract class Query {
         checkedDocument.stream().forEach(doc -> v2.put(doc, createDocumentTfIdfVector(doc, query.getTokens(), idfcache)));
 
         //normalize each vectors
-        getComputeIDF().normalize(v1);
+        MathIdf.normalize(v1);
 
         //create a hashmap to link a document to its 'proximity score'
         List<Pair<Double, Document>> similarities = new ArrayList<>();
         for (Document doc : v2.keySet()) {
-            Double coef = getComputeIDF().dotProd(v1, v2.get(doc)) / getComputeIDF().distance(v1, v2.get(doc));
+            Double coef = MathIdf.dotProd(v1, v2.get(doc)) / MathIdf.distance(v1, v2.get(doc));
             similarities.add(new Pair<>(coef, doc));
         }
 
@@ -84,6 +78,6 @@ public abstract class Query {
                     idfcache.getIdf(token.getWord()) * tokenFrequency.get(token.getWord()) : 0.d);
         });
 
-        return getComputeIDF().normalize(vector);
+        return MathIdf.normalize(vector);
     }
 }
