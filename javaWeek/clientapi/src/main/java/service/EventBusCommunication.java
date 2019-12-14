@@ -15,12 +15,12 @@ public abstract class EventBusCommunication {
     WebSocketEntity WSReceiver;
     WebSocketEntity WSSender;
 
-    EventBusCommunication(URI uriReceiver, URI uriSender) {
+    public EventBusCommunication(URI uriReceiver, URI uriSender) {
         WSReceiver = new WebSocketEntity(uriReceiver);
         WSSender = new WebSocketEntity(uriSender);
     }
 
-    EventBusCommunication(URI uri) {
+    public EventBusCommunication(URI uri) {
         WSReceiver = new WebSocketEntity(uri);
         WSSender = null;
     }
@@ -42,7 +42,7 @@ public abstract class EventBusCommunication {
             }
         }
     }
-g
+
     public abstract void processMessage(Message m);
 
     public void sendMessage(Message message) {

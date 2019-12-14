@@ -15,7 +15,7 @@ public class Main {
         try {
             String uuid = UUID.randomUUID().toString();
             WSCommunication wsCommunication = new WSCommunication(
-                    new URI("ws://localhost:8080/subscribe/broadcast/index_document_command" + uuid),
+                    new URI("ws://localhost:8080/subscribe/broadcast/index_document_command/" + uuid),
                     new URI("ws://localhost:8080/subscribe/broadcast/index_result_event"),
                     uuid);
             wsCommunication.startEventLoop();
