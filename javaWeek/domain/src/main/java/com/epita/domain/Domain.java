@@ -38,7 +38,6 @@ public class Domain {
     @NotNull private DomainCrawlerConnectionWS crawlerConnectionWS;
     @NotNull private DomainIndexerConnectionWS indexerConnectionWS;
 
-
     private final Queue<String> urlToCrawl = new LinkedList<>();
     private final Queue<String> urlToIndex = new LinkedList<>();
 

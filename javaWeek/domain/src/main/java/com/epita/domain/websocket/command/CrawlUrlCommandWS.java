@@ -13,18 +13,19 @@ import java.net.URI;
 
 public class CrawlUrlCommandWS extends EventBusCommunication {
 
-    private Domain domain;
+    @NotNull private Domain domain;
 
-    public CrawlUrlCommandWS(URI uriReceiver, URI uriSender, Domain domain) {
+    public CrawlUrlCommandWS(@NotNull URI uriReceiver, @NotNull URI uriSender, @NotNull Domain domain) {
         super(uriReceiver, uriSender);
         this.domain = domain;
     }
 
+    @Pure
     @Override
     public void processMessage(@NotNull final Message m) {
 
         try {
-            String url = new ObjectMapper().readValue(m.jsonContent, String.class);
+            final String url = new ObjectMapper().readValue(m.jsonContent, String.class);
             domain.addUrlToIndex(url);
             domain.updateCrawlerQueue(m.senderUID);
         } catch (IOException e) {
@@ -36,8 +37,8 @@ public class CrawlUrlCommandWS extends EventBusCommunication {
     public void sendCrawnCommand(@NotNull final String url) {
 
         try {
-            String json = new ObjectMapper().writeValueAsString(url);
-            Message m  = new Message(String.class.getName(), json);
+            final String json = new ObjectMapper().writeValueAsString(url);
+            final Message m  = new Message(String.class.getName(), json);
             sendMessage(m);
         } catch (JsonProcessingException e) {
         }

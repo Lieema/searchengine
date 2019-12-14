@@ -13,9 +13,9 @@ import java.net.URI;
 
 public class IndexDocumentCommandWS extends EventBusCommunication {
 
-    private Domain domain;
+    @NotNull private Domain domain;
 
-    public IndexDocumentCommandWS(URI uriReceiver, URI uriSender, Domain domain) {
+    public IndexDocumentCommandWS(@NotNull URI uriReceiver, @NotNull URI uriSender, @NotNull Domain domain) {
         super(uriReceiver, uriSender);
         this.domain = domain;
     }

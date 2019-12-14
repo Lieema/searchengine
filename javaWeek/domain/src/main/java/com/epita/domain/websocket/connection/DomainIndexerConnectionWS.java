@@ -1,5 +1,7 @@
 package com.epita.domain.websocket.connection;
 
+import annotation.NotNull;
+import annotation.Pure;
 import com.epita.domain.Domain;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import model.Message;
@@ -10,17 +12,18 @@ import java.net.URI;
 
 public class DomainIndexerConnectionWS extends EventBusCommunication {
 
-    private Domain domain;
+    @NotNull private Domain domain;
 
-    public DomainIndexerConnectionWS(URI uri, Domain domain) {
+    public DomainIndexerConnectionWS(@NotNull URI uri, @NotNull Domain domain) {
         super(uri);
         this.domain = domain;
     }
 
+    @Pure
     @Override
-    public void processMessage(Message m) {
+    public void processMessage(@NotNull final Message m) {
         try {
-            String id = new ObjectMapper().readValue(m.jsonContent, String.class);
+            final String id = new ObjectMapper().readValue(m.jsonContent, String.class);
             domain.addIndexer(id);
         } catch (IOException e) {
         }
