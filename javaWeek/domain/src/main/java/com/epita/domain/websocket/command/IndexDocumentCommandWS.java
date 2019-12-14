@@ -16,14 +16,14 @@ public class IndexDocumentCommandWS extends EventBusCommunication {
     @NotNull
     private Domain domain;
 
-    public IndexDocumentCommandWS(@NotNull URI uriReceiver, @NotNull URI uriSender, @NotNull Domain domain) {
-        super(uriReceiver, uriSender);
+    public IndexDocumentCommandWS(URI uri, Domain dOmain) {
+        super(uri);
         this.domain = domain;
     }
 
+
     @Override
     public void processMessage(Message m) {
-        domain.updateIndexerQueue(m.senderUID);
     }
 
     @Pure

@@ -17,22 +17,15 @@ public class CrawlUrlCommandWS extends EventBusCommunication {
     @NotNull
     private Domain domain;
 
-    public CrawlUrlCommandWS(@NotNull URI uriReceiver, @NotNull URI uriSender, @NotNull Domain domain) {
-        super(uriReceiver, uriSender);
+    public CrawlUrlCommandWS(URI uri, Domain domain) {
+        super(uri);
         this.domain = domain;
     }
+
 
     @Pure
     @Override
     public void processMessage(@NotNull final Message m) {
-
-        try {
-            final List<String> urls = new ObjectMapper().readValue(m.jsonContent, List.class);
-            domain.addUrlToCrawl(urls);
-            domain.updateCrawlerQueue(m.senderUID);
-        } catch (IOException e) {
-        }
-
     }
 
     @Pure

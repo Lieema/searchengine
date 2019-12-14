@@ -1,6 +1,8 @@
 package com.epita.domain;
 
 import com.epita.clientapi.model.Message;
+import com.epita.domain.websocket.result.CrawlerResultEventWS;
+import com.epita.domain.websocket.result.IndexerResultEventWS;
 import com.epita.utils.annotation.Mutate;
 import com.epita.domain.websocket.command.CrawlUrlCommandWS;
 import com.epita.domain.websocket.command.IndexDocumentCommandWS;
@@ -37,6 +39,9 @@ public class Domain {
 
     @NotNull private DomainCrawlerConnectionWS crawlerConnectionWS;
     @NotNull private DomainIndexerConnectionWS indexerConnectionWS;
+    @NotNull private CrawlerResultEventWS crawlerResultWS;
+    @NotNull private IndexerResultEventWS indexerResultWS;
+
 
     private List<String> urlChecked = new ArrayList<>();
     private final Integer crawklLimit = 100;
@@ -50,6 +55,8 @@ public class Domain {
         try {
             crawlerConnectionWS = new DomainCrawlerConnectionWS(new URI(crawlerConnection), this);
             indexerConnectionWS = new DomainIndexerConnectionWS(new URI(indexerConnection), this);
+            crawlerResultWS = new CrawlerResultEventWS(new URI(crawlerResult), this);
+            indexerResultWS = new IndexerResultEventWS(new URI(indexerResult), this);
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
@@ -71,6 +78,8 @@ public class Domain {
 
         crawlerConnectionWS.startWS();
         indexerConnectionWS.startWS();
+        crawlerResultWS.startWS();
+        indexerResultWS.startWS();
 
         logger.info("Domain: Start loop");
         while (isRunning) {
@@ -99,8 +108,7 @@ public class Domain {
             resultUrl.append(id);
 
             try {
-                CrawlUrlCommandWS ws = new CrawlUrlCommandWS(
-                        new URI(commandUrl.toString()), new URI(resultUrl.toString()), this);
+                CrawlUrlCommandWS ws = new CrawlUrlCommandWS(new URI(commandUrl.toString()), this);
                 crawlerCommandWS.put(id, ws);
                 crawlerAvailable.add(id);
                 ws.startWS();
@@ -123,8 +131,7 @@ public class Domain {
             resultUrl.append(id);
 
             try {
-                IndexDocumentCommandWS ws = new IndexDocumentCommandWS(
-                        new URI(commandUrl.toString()), new URI(resultUrl.toString()),this);
+                IndexDocumentCommandWS ws = new IndexDocumentCommandWS(new URI(commandUrl.toString()),this);
                 indexerCommandWS.put(id, ws);
                 indexerAvailable.add(id);
                 ws.startWS();
