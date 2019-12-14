@@ -152,7 +152,7 @@ public class Domain {
             String id = crawlerAvailable.poll();
             CrawlUrlCommandWS ws = crawlerCommandWS.get(id);
             String json = new ObjectMapper().writeValueAsString(url);
-            Message m = new Message(json, String.class.getName(), id);
+            Message m = new Message(String.class.getName(), json, id);
             ws.sendMessage(m);
             logger.info("Domain: Send crawlUrlCommand to crawler " + id + " url = " + url);
 
@@ -174,7 +174,7 @@ public class Domain {
             String id = indexerAvailable.poll();
             IndexDocumentCommandWS ws = indexerCommandWS.get(id);
             String json = new ObjectMapper().writeValueAsString(url);
-            Message m = new Message(json, String.class.getName(), id);
+            Message m = new Message(String.class.getName(), json,id);
             ws.sendMessage(m);
 
             logger.info("Domain: Send indexDocumentCommand to indexer " + id + " url = " + url);
