@@ -42,7 +42,7 @@ public abstract class EventBusCommunication {
             }
         }
     }
-g
+
     public abstract void processMessage(Message m);
 
     public void sendMessage(Message message) {

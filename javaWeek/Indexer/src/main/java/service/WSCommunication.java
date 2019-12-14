@@ -9,6 +9,7 @@ import org.apache.logging.log4j.Logger;
 import service.indexService.DefaultIndexerService;
 
 import java.net.URI;
+import java.net.URISyntaxException;
 
 public class WSCommunication extends EventBusCommunication {
     public Logger logger = LogManager.getLogger(WSCommunication.class);
@@ -18,7 +19,11 @@ public class WSCommunication extends EventBusCommunication {
     public WSCommunication(URI uriReceiver, URI uriSender, String uuid) {
         super(uriReceiver, uriSender);
         this.uuid = uuid;
-        sendConnectionEvent(uriSender, uuid);
+        try {
+            sendConnectionEvent(new URI("ws://localhost:8080/subscribe/broadcast/indexer_connection_event"), uuid);
+        } catch (URISyntaxException e) {
+            logger.error("[WSCOM] Uri parsing failed");
+        }
         logger.info("[WSCOM] New websocket client (receiver and sender) with uuid : " + uuid);
     }
 
