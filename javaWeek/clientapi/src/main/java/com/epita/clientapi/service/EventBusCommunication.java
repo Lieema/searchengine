@@ -24,6 +24,25 @@ public abstract class EventBusCommunication {
         WSSender = null;
     }
 
+    public void startWS() {
+        try {
+            if (WSReceiver != null) {
+                logger.info("[EVENTCOM] Start websocket (receiver) : " + WSReceiver.getURI().toString());
+                WSReceiver.connectBlocking();
+            }
+        } catch (InterruptedException e) {
+            logger.error("[EVENTCOM] Error connecting to websocket : " + WSReceiver.getURI().toString());
+        }
+        try {
+            if (WSSender != null) {
+                logger.info("[EVENTCOM] Start websocket (sender) : " + WSSender.getURI().toString());
+                WSSender.connectBlocking();
+            }
+        } catch (InterruptedException e) {
+            logger.error("[EVENTCOM] Error connecting to websocket : " + WSSender.getURI().toString());
+        }
+    }
+
     public abstract void processMessage(Message m);
 
     public void sendMessage(Message message) {
