@@ -1,11 +1,11 @@
 package com.epita.tfidf.util;
 
-public class Pair<A, B> {
+public class Pair<TYPE_A, TYPE_B> {
 
-    public A first;
-    public B second;
+    public TYPE_A first;
+    public TYPE_B second;
 
-    public Pair(A first, B second) {
+    public Pair(TYPE_A first, TYPE_B second) {
         this.first = first;
         this.second = second;
     }
