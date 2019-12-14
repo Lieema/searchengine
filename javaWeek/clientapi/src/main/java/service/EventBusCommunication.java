@@ -8,6 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.net.URI;
+import java.net.URISyntaxException;
 
 public abstract class EventBusCommunication {
     public static Logger logger = LogManager.getLogger(EventBusCommunication.class);
@@ -36,12 +37,12 @@ public abstract class EventBusCommunication {
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
-                    logger.error("[MAIN] Thread sleep failed");
+                    logger.error("[EVENTCOM] Thread sleep failed");
                 }
             }
         }
     }
-
+g
     public abstract void processMessage(Message m);
 
     public void sendMessage(Message message) {
@@ -50,5 +51,17 @@ public abstract class EventBusCommunication {
             WSReceiver.send(json);
         else
             WSSender.send(json);
+    }
+
+    public void sendConnectionEvent(URI uri, String uuid) {
+        try {
+            WebSocketEntity webSocketEntity = new WebSocketEntity(uri);
+            Message m = new Message(String.class.getName(), uuid);
+            logger.error("[EVENTCOM] Send connection event for uuid : " + uuid);
+            webSocketEntity.send(ConvertJsonStringObject.convertToJsonString(m));
+            webSocketEntity.closeBlocking();
+        } catch (InterruptedException e) {
+            logger.error("[EVENTCOM] Websocket closing failed");
+        }
     }
 }

@@ -12,10 +12,14 @@ import java.net.URI;
 
 public class WSCommunication extends EventBusCommunication {
     public Logger logger = LogManager.getLogger(WSCommunication.class);
-    DefaultIndexerService indexerService = new DefaultIndexerService();
+    private DefaultIndexerService indexerService = new DefaultIndexerService();
+    private String uuid;
 
-    public WSCommunication(URI uriReceiver, URI uriSender) {
+    public WSCommunication(URI uriReceiver, URI uriSender, String uuid) {
         super(uriReceiver, uriSender);
+        this.uuid = uuid;
+        sendConnectionEvent(uriSender, uuid);
+        logger.info("[WSCOM] New websocket client (receiver and sender) with uuid : " + uuid);
     }
 
     @Override
@@ -27,7 +31,6 @@ public class WSCommunication extends EventBusCommunication {
         } catch (Exception e) {
             logger.error("[WSCOM] Document deserialization failed");
         }
-
     }
 
     public void sendDocument(Document document) {
