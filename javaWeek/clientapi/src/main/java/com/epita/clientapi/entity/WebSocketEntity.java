@@ -1,5 +1,8 @@
 package com.epita.clientapi.entity;
 
+import com.epita.clientapi.helper.ConvertJsonStringObject;
+import com.epita.clientapi.model.Message;
+import com.epita.clientapi.service.EventBusCommunication;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.java_websocket.client.WebSocketClient;
@@ -10,12 +13,13 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class WebSocketEntity extends WebSocketClient {
-    public Logger logger = LogManager.getLogger(getClass());
-    public Queue<String> messageReceivedQueue;
+    private Logger logger = LogManager.getLogger(getClass());
 
-    public WebSocketEntity(URI serverUri) {
+    private EventBusCommunication eventBusCommunication;
+
+    public WebSocketEntity(URI serverUri, EventBusCommunication eventBusCommunication) {
         super(serverUri);
-        messageReceivedQueue = new LinkedList<>();
+        this.eventBusCommunication = eventBusCommunication;
     }
 
     @Override
@@ -38,7 +42,9 @@ public class WebSocketEntity extends WebSocketClient {
     public void onMessage(String s) {
         logger.info("[WS] Receive message, added to queue");
         logger.debug("[WS] message : " + s);
-        messageReceivedQueue.add(s);
+        Message m = ConvertJsonStringObject.convertToMessage(s);
+        if (m != null)
+            eventBusCommunication.processMessage(m);
     }
 
     @Override
@@ -47,4 +53,6 @@ public class WebSocketEntity extends WebSocketClient {
         logger.debug("[WS] message : " + text);
         super.send(text);
     }
+
+
 }

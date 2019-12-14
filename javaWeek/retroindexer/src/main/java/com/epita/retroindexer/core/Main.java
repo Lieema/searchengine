@@ -15,7 +15,6 @@ public class Main {
         RestApi api = new RestApi(8000);
         try {
             WSCommunication ws = new WSCommunication(new URI("ws://localhost:8080/subscribe/broadcast/index_result_event"));
-            ws.startEventLoop();
         } catch (URISyntaxException e) {
             logger.error("[MAIN] Error parsing URI");
         }

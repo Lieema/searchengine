@@ -18,7 +18,6 @@ public class Main {
                     new URI("ws://localhost:8080/subscribe/broadcast/index_document_command/" + uuid),
                     new URI("ws://localhost:8080/subscribe/broadcast/index_result_event"),
                     uuid);
-            wsCommunication.startEventLoop();
         } catch (URISyntaxException e) {
             logger.error("[MAIN] Error parsing URI");
         }
