@@ -11,11 +11,16 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import model.Message;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
 
 public class Domain {
+
+    public Logger logger = LogManager.getLogger(Domain.class);
 
     private final String crawlerConnection = "ws://localhost:8080/subscribe/broadcast/crawler_connection_event";
     private final String crawlerCommand = "ws://localhost:8080/subscribe/broadcast/crawl_url_command/";
@@ -49,7 +54,17 @@ public class Domain {
     }
 
     @Mutate
+    public void setRunning(boolean running) {
+        isRunning = running;
+    }
+
+    @Mutate
     public void startEventLoop() {
+
+        crawlerConnectionWS.startEventLoop();
+        indexerConnectionWS.startEventLoop();
+
+        logger.info("Domain: Start loop");
         while (isRunning) {
 
             if (urlToCrawl.size() != 0 && crawlerAvailable.size() != 0) {
@@ -62,6 +77,7 @@ public class Domain {
                 indexDocument(url);
             }
         }
+        logger.info("Domain: Stop loop");
     }
 
     @Mutate
@@ -80,6 +96,7 @@ public class Domain {
                 crawlerCommandWS.put(id, ws);
                 crawlerAvailable.add(id);
                 ws.startEventLoop();
+                logger.info("Domain: add crawler id = " + id);
 
             } catch (URISyntaxException e) {
             }
@@ -102,6 +119,8 @@ public class Domain {
                 indexerCommandWS.put(id, ws);
                 indexerAvailable.add(id);
                 ws.startEventLoop();
+                logger.info("Domain: add indexer id = " + id);
+
 
             } catch (URISyntaxException e) {
             }
@@ -117,6 +136,8 @@ public class Domain {
             String json = new ObjectMapper().writeValueAsString(url);
             Message m = new Message(json, String.class.getName(), id);
             ws.sendMessage(m);
+            logger.info("Domain: Send crawlUrlCommand to crawler " + id + " url = " + url);
+
 
         } catch (JsonProcessingException e) {
         }
@@ -131,6 +152,9 @@ public class Domain {
             Message m = new Message(json, String.class.getName(), id);
             ws.sendMessage(m);
 
+            logger.info("Domain: Send indexDocumentCommand to indexer " + id + " url = " + url);
+
+
         } catch (JsonProcessingException e) {
         }
     }
@@ -140,6 +164,7 @@ public class Domain {
 
         CrawlUrlCommandWS ws = crawlerCommandWS.get(id);
         crawlerAvailable.add(id);
+        logger.info("Domain: crawler " + id + " is available");
     }
 
     @Mutate
@@ -147,15 +172,19 @@ public class Domain {
 
         IndexDocumentCommandWS ws = indexerCommandWS.get(id);
         indexerAvailable.add(id);
+        logger.info("Domain: indexer " + id + " is available");
+
     }
 
     @Mutate
     public void addUrlToCrawn(@NotNull final String url) {
         urlToCrawl.add(url);
+        logger.info("Url " + url + " has to be crawled");
     }
 
     @Mutate
     public void addUrlToIndex(@NotNull final String url) {
         urlToIndex.add(url);
+        logger.info("Url " + url + " has to be indexed");
     }
 }
