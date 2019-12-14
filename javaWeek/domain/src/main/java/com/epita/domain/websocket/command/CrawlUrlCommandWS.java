@@ -28,7 +28,7 @@ public class CrawlUrlCommandWS extends EventBusCommunication {
 
         try {
             final List<String> urls = new ObjectMapper().readValue(m.jsonContent, List.class);
-            domain.addUrlToIndex(urls);
+            domain.addUrlToCrawl(urls);
             domain.updateCrawlerQueue(m.senderUID);
         } catch (IOException e) {
         }

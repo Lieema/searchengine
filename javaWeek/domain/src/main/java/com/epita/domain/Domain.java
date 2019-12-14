@@ -38,6 +38,9 @@ public class Domain {
     @NotNull private DomainCrawlerConnectionWS crawlerConnectionWS;
     @NotNull private DomainIndexerConnectionWS indexerConnectionWS;
 
+    private List<String> urlChecked = new ArrayList<>();
+    private final Integer crawklLimit = 100;
+
     private final Queue<String> urlToCrawl = new LinkedList<>();
     private final Queue<String> urlToIndex = new LinkedList<>();
 
@@ -50,6 +53,12 @@ public class Domain {
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
+
+        urlToCrawl.add("https://en.wikipedia.org/wiki/Rabbit");
+        urlToCrawl.add("https://en.wikipedia.org/wiki/Planet");
+        urlToCrawl.add("https://en.wikipedia.org/wiki/Forest");
+        urlToCrawl.add("https://en.wikipedia.org/wiki/Castle");
+        urlToCrawl.add("https://en.wikipedia.org/wiki/Water");
     }
 
     @Mutate
@@ -59,7 +68,7 @@ public class Domain {
 
     @Mutate
     public void startEventLoop() {
-        logger.info("Domain: Start loop");
+          logger.info("Domain: Start loop");
         while (isRunning) {
 
             if (urlToCrawl.size() != 0 && crawlerAvailable.size() != 0) {
@@ -124,12 +133,17 @@ public class Domain {
     private void crawlUrl(@NotNull final String url) {
 
         try {
+            if (urlChecked.contains(url))
+                return;
+
             String id = crawlerAvailable.poll();
             CrawlUrlCommandWS ws = crawlerCommandWS.get(id);
             String json = new ObjectMapper().writeValueAsString(url);
             Message m = new Message(json, String.class.getName(), id);
             ws.sendMessage(m);
             logger.info("Domain: Send crawlUrlCommand to crawler " + id + " url = " + url);
+
+            addUrlToIndex(url);
 
 
         } catch (JsonProcessingException e) {
@@ -139,6 +153,11 @@ public class Domain {
     @Pure
     private void indexDocument(@NotNull final String url) {
         try {
+            if (urlChecked.contains(url))
+                return;
+
+            urlChecked.add(url);
+
             String id = indexerAvailable.poll();
             IndexDocumentCommandWS ws = indexerCommandWS.get(id);
             String json = new ObjectMapper().writeValueAsString(url);
@@ -170,16 +189,16 @@ public class Domain {
     }
 
     @Mutate
-    public void addUrlToCrawl(@NotNull final String url) {
-        urlToCrawl.add(url);
-        logger.info("Url " + url + " has to be crawled");
+    public void addUrlToCrawl(@NotNull final List<String> urls) {
+        for(String url: urls) {
+            urlToCrawl.add(url);
+            logger.info("Url " + url + " has to be crawled");
+        }
     }
 
     @Mutate
-    public void addUrlToIndex(@NotNull final List<String> urls) {
-        for (String url: urls) {
+    public void addUrlToIndex(@NotNull final String url) {
             urlToIndex.add(url);
             logger.info("Url " + url + " has to be indexed");
-        }
     }
 }
