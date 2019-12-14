@@ -1,14 +1,14 @@
 package com.mti.hivers.core;
 
-import annotation.Mutate;
-import annotation.NotNull;
-import annotation.Pure;
-import exception.InvalidScopePopException;
+import com.epita.utils.annotation.Mutate;
+import com.epita.utils.annotation.NotNull;
+import com.epita.utils.annotation.Pure;
+import com.epita.utils.exception.InvalidScopePopException;
 
 import java.util.Deque;
 import java.util.Optional;
 
-import static validation.Fault.NULL;
+import static com.epita.utils.validation.Fault.NULL;
 
 @Mutate
 public interface ScopeStack {

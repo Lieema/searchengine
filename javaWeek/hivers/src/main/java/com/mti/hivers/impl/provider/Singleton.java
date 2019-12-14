@@ -1,10 +1,10 @@
 package com.mti.hivers.impl.provider;
 
-import annotation.Mutate;
-import annotation.NotNull;
-import annotation.Nullable;
+import com.epita.utils.annotation.Mutate;
+import com.epita.utils.annotation.NotNull;
+import com.epita.utils.annotation.Nullable;
 import com.mti.hivers.core.Aspect;
-import validation.Fault;
+import com.epita.utils.validation.Fault;
 
 import java.util.Arrays;
 import java.util.function.Supplier;

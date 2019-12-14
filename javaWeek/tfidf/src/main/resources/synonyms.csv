@@ -546,7 +546,7 @@ journey, journeying
 judge, justice, jurist
 jump, leap, bound, spring
 keep, maintain, hold
-kernel, substance, core, center, centre, essence, gist, heart, heart and soul, inwardness, marrow, meat, nub, pith, sum, nitty-gritty
+kernel, substance, com.epita.crawler.core, center, centre, essence, gist, heart, heart and soul, inwardness, marrow, meat, nub, pith, sum, nitty-gritty
 kick, boot, kicking
 kind, sort, form, variety
 king, male monarch, Rex
@@ -585,7 +585,7 @@ lookout, lookout man, sentinel, sentry, watch, spotter, scout, picket
 low, depression
 lunch, luncheon, tiffin, dejeuner
 magazine, mag
-mail, mail service, postal service, post
+mail, mail com.epita.crawler.service, postal com.epita.crawler.service, post
 mail, post, send
 majority, bulk
 make, create
@@ -628,7 +628,7 @@ metallic, metal
 metallic element, metal
 metro, tube, underground, subway system, subway
 might, mightiness, power
-military, armed forces, armed service, military machine, war machine
+military, armed forces, armed com.epita.crawler.service, military machine, war machine
 milkshake, milk shake, shake
 million, 1000000, one thousand thousand, meg
 mind, head, brain, psyche, nous
@@ -677,7 +677,7 @@ normally, usually, unremarkably, commonly, ordinarily
 north, due north, northward, N
 nose, olfactory organ
 not, non
-note, annotation, notation
+note, com.epita.utils.annotation, notation
 note, musical note, tone
 nothing, nil, nix, nada, null, aught, cipher, cypher, goose egg, naught, zero, zilch, zip, zippo
 now, at present
@@ -1407,7 +1407,7 @@ info, information
 informatics, computer science, information science
 information technology, IT
 instrument, musical instrument
-internet service provider, ISP, Internet access provider, Internet service provider
+internet com.epita.crawler.service provider, ISP, Internet access provider, Internet com.epita.crawler.service provider
 island, isle
 joint, articulation
 journal, mag, magazine, periodical

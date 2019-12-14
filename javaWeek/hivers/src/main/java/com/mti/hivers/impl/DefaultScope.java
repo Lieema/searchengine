@@ -1,9 +1,9 @@
 package com.mti.hivers.impl;
 
-import annotation.NotNull;
+import com.epita.utils.annotation.NotNull;
 import com.mti.hivers.core.Provider;
 import com.mti.hivers.core.Scope;
-import validation.Fault;
+import com.epita.utils.validation.Fault;
 
 import java.util.ArrayList;
 import java.util.Collections;

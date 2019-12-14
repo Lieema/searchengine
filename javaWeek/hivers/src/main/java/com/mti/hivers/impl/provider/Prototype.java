@@ -1,9 +1,9 @@
 package com.mti.hivers.impl.provider;
 
-import annotation.NotNull;
-import annotation.Nullable;
-import annotation.Pure;
-import validation.Fault;
+import com.epita.utils.annotation.NotNull;
+import com.epita.utils.annotation.Nullable;
+import com.epita.utils.annotation.Pure;
+import com.epita.utils.validation.Fault;
 
 import java.util.Collections;
 import java.util.function.Supplier;
