@@ -66,12 +66,6 @@
 
         <dependency>
             <groupId>org.example</groupId>
-            <artifactId>eventbus</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.example</groupId>
             <artifactId>tfidf</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
