@@ -68,7 +68,11 @@ public class Domain {
 
     @Mutate
     public void startEventLoop() {
-          logger.info("Domain: Start loop");
+
+        crawlerConnectionWS.startWS();
+        indexerConnectionWS.startWS();
+
+        logger.info("Domain: Start loop");
         while (isRunning) {
 
             if (urlToCrawl.size() != 0 && crawlerAvailable.size() != 0) {
@@ -99,6 +103,7 @@ public class Domain {
                         new URI(commandUrl.toString()), new URI(resultUrl.toString()), this);
                 crawlerCommandWS.put(id, ws);
                 crawlerAvailable.add(id);
+                ws.startWS();
                 logger.info("Domain: add crawler id = " + id);
 
             } catch (URISyntaxException e) {
@@ -122,6 +127,7 @@ public class Domain {
                         new URI(commandUrl.toString()), new URI(resultUrl.toString()),this);
                 indexerCommandWS.put(id, ws);
                 indexerAvailable.add(id);
+                ws.startWS();
                 logger.info("Domain: add indexer id = " + id);
             } catch (URISyntaxException e) {
                 logger.error("Domain: ERROR: CANNOT CONVERT STRING URL TO URI");
