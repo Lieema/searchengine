@@ -128,7 +128,7 @@ public class Domain {
     }
 
     @Pure
-    public void crawlUrl(@NotNull final String url) {
+    private void crawlUrl(@NotNull final String url) {
 
         try {
             String id = crawlerAvailable.poll();
@@ -144,7 +144,7 @@ public class Domain {
     }
 
     @Pure
-    public void indexDocument(@NotNull final String url) {
+    private void indexDocument(@NotNull final String url) {
         try {
             String id = indexerAvailable.poll();
             IndexDocumentCommandWS ws = indexerCommandWS.get(id);
