@@ -1,74 +1,50 @@
 package entity;
 
-import helper.ConvertJsonStringObject;
-import model.Message;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.java_websocket.client.WebSocketClient;
-import org.java_websocket.drafts.Draft;
 import org.java_websocket.handshake.ServerHandshake;
 
 import java.net.URI;
-import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
 import java.util.Queue;
 
 public class WebSocketEntity extends WebSocketClient {
-    private Queue<String> messageReceivedQueue;
-    private Message message;
+    public Logger logger = LogManager.getLogger(getClass());
+    public Queue<String> messageReceivedQueue;
 
     public WebSocketEntity(URI serverUri) {
         super(serverUri);
-    }
-
-    public WebSocketEntity(URI serverUri, Draft draft) {
-        super(serverUri, draft);
-        messageReceivedQueue = new LinkedList<String>();
-    }
-
-    public WebSocketEntity(URI serverURI, String senderType, String messageType) {
-        super(serverURI);
-        messageReceivedQueue = new LinkedList<String>();
-        this.message = new Message();
-        this.message.senderType = senderType;
-        this.message.messageType = messageType;
+        messageReceivedQueue = new LinkedList<>();
     }
 
     @Override
-    public void onOpen(ServerHandshake handshakedata) {
-        ConvertJsonStringObject converter = new ConvertJsonStringObject();
-        send(converter.convertToJsonString(this.message));
+    public void onOpen(ServerHandshake serverHandshake) {
+        logger.info("[WS] Connect to " + getURI().toString());
+    }
+
+
+    @Override
+    public void onClose(int i, String s, boolean b) {
+        logger.info("[WS] Disconnect from " + getURI().toString());
     }
 
     @Override
-    public void onClose(int code, String reason, boolean remote) {
-        send("closed");
+    public void onError(Exception e) {
+        logger.error("[WS] Error on connection");
     }
 
     @Override
-    public void onMessage(String message) {
-        messageReceivedQueue.add(message);
+    public void onMessage(String s) {
+        logger.info("[WS] Receive message, added to queue");
+        logger.debug("[WS] message : " + s);
+        messageReceivedQueue.add(s);
     }
 
     @Override
-    public void onMessage(ByteBuffer message) {
-        String v = StandardCharsets.UTF_8.decode(message).toString();
-        messageReceivedQueue.add(v);
-    }
-
-    @Override
-    public void onError(Exception ex) {
-        System.err.println("an error occurred:" + ex);
-    }
-
-    public Queue<String> getMessageQueue() {
-        return messageReceivedQueue;
-    }
-
-    public Message getMessage() {
-        return message;
-    }
-
-    public void setMessage(Message message) {
-        this.message = message;
+    public void send(String text) {
+        logger.info("[WS] Send message");
+        logger.debug("[WS] message : " + text);
+        super.send(text);
     }
 }
