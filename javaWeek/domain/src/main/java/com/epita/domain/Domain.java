@@ -191,6 +191,8 @@ public class Domain {
     @Mutate
     public void addUrlToCrawl(@NotNull final List<String> urls) {
         for(String url: urls) {
+            if (urlChecked.size() >= crawklLimit)
+                break;
             urlToCrawl.add(url);
             logger.info("Url " + url + " has to be crawled");
         }
