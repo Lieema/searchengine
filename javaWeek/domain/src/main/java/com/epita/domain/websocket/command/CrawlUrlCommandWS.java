@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.List;
 
 public class CrawlUrlCommandWS extends EventBusCommunication {
 
@@ -26,8 +27,8 @@ public class CrawlUrlCommandWS extends EventBusCommunication {
     public void processMessage(@NotNull final Message m) {
 
         try {
-            final String url = new ObjectMapper().readValue(m.jsonContent, String.class);
-            domain.addUrlToIndex(url);
+            final List<String> urls = new ObjectMapper().readValue(m.jsonContent, List.class);
+            domain.addUrlToIndex(urls);
             domain.updateCrawlerQueue(m.senderUID);
         } catch (IOException e) {
         }

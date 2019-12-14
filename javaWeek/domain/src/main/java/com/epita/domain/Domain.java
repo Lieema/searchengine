@@ -176,14 +176,16 @@ public class Domain {
     }
 
     @Mutate
-    public void addUrlToCrawn(@NotNull final String url) {
+    public void addUrlToCrawl(@NotNull final String url) {
         urlToCrawl.add(url);
         logger.info("Url " + url + " has to be crawled");
     }
 
     @Mutate
-    public void addUrlToIndex(@NotNull final String url) {
-        urlToIndex.add(url);
-        logger.info("Url " + url + " has to be indexed");
+    public void addUrlToIndex(@NotNull final List<String> urls) {
+        for (String url: urls) {
+            urlToIndex.add(url);
+            logger.info("Url " + url + " has to be indexed");
+        }
     }
 }
