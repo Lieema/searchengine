@@ -46,6 +46,6 @@ public class WSCommunication extends EventBusCommunication {
             logger.error("[WSCOM] Urls serialization failed");
         }
         String className = List.class.getName();
-        sendMessage(new Message(className, content));
+        sendMessage(new Message(className, content, uuid));
     }
 }

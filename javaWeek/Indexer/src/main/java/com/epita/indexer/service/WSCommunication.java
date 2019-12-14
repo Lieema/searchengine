@@ -44,7 +44,7 @@ public class WSCommunication extends EventBusCommunication {
         try {
             content = new ObjectMapper().writeValueAsString(document);
             String className = Document.class.getName();
-            sendMessage(new Message(className, content));
+            sendMessage(new Message(className, content, uuid));
         } catch (JsonProcessingException e) {
             logger.error("[WSCOM] Document serialization failed");
         }

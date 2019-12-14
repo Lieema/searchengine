@@ -55,7 +55,7 @@ public abstract class EventBusCommunication {
     public void sendConnectionEvent(URI uri, String uuid) {
         try {
             WebSocketEntity webSocketEntity = new WebSocketEntity(uri);
-            Message m = new Message(String.class.getName(), uuid);
+            Message m = new Message(String.class.getName(), uuid, uuid);
             logger.error("[EVENTCOM] Send connection event for uuid : " + uuid);
             webSocketEntity.send(ConvertJsonStringObject.convertToJsonString(m));
             webSocketEntity.closeBlocking();
