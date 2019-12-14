@@ -1,9 +1,14 @@
 package com.epita.eventbus.core;
 
 import com.epita.eventbus.entity.Broker;
+import com.mti.hivers.impl.Hivers;
+import com.mti.hivers.impl.provider.Singleton;
 
 public class Server {
     public static void main(String[] args) {
-        Broker broker = new Broker(8080);
+
+        Hivers hiver = new Hivers();
+
+        hiver.addProvider(new Singleton<Broker>(Broker.class, new Broker(8080)));
     }
 }
