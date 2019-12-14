@@ -1,6 +1,6 @@
 package com.mti.hivers.core;
 
-import annotation.NotNull;
+import com.epita.utils.annotation.NotNull;
 
 public interface Aspect<BEAN_TYPE> {
 

@@ -1,12 +1,12 @@
 package com.mti.hivers.impl;
 
-import annotation.Mutate;
-import annotation.NotNull;
-import annotation.Pure;
+import com.epita.utils.annotation.Mutate;
+import com.epita.utils.annotation.NotNull;
+import com.epita.utils.annotation.Pure;
 import com.mti.hivers.core.Provider;
 import com.mti.hivers.core.Scope;
 import com.mti.hivers.core.ScopeStack;
-import exception.BeanNotFoundException;
+import com.epita.utils.exception.BeanNotFoundException;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static validation.Fault.NULL;
+import static com.epita.utils.validation.Fault.NULL;
 
 public class Hivers implements ScopeStack, Scope {
 

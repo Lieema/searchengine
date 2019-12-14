@@ -1,6 +1,6 @@
 package com.mti.hivers.impl.aspect;
 
-import annotation.NotNull;
+import com.epita.utils.annotation.NotNull;
 import com.mti.hivers.core.Aspect;
 import com.mti.hivers.core.Provider;
 import com.mti.hivers.functional.ThrowingTriFunction;

@@ -1,14 +1,14 @@
 package com.mti.hivers.impl.provider;
 
-import annotation.NotNull;
+import com.epita.utils.annotation.NotNull;
 import com.mti.hivers.core.Aspect;
 import com.mti.hivers.core.Provider;
 import com.mti.hivers.impl.aspect.After;
 import com.mti.hivers.impl.aspect.Around;
 import com.mti.hivers.impl.aspect.Before;
-import exception.ProxyTypeNotAnInterfaceException;
-import validation.Assert;
-import validation.Fault;
+import com.epita.utils.exception.ProxyTypeNotAnInterfaceException;
+import com.epita.utils.validation.Assert;
+import com.epita.utils.validation.Fault;
 
 import java.util.ArrayList;
 import java.util.Collections;
