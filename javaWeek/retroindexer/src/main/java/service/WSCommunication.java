@@ -27,6 +27,5 @@ public class WSCommunication extends EventBusCommunication {
         } catch (Exception e) {
             logger.error("[WSCOM] Document deserialization failed");
         }
-
     }
 }
