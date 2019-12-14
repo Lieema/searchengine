@@ -1,18 +1,19 @@
 package com.epita.domain.websocket.connection;
 
-import annotation.NotNull;
-import annotation.Pure;
+import com.epita.clientapi.model.Message;
+import com.epita.clientapi.service.EventBusCommunication;
 import com.epita.domain.Domain;
+import com.epita.utils.annotation.NotNull;
+import com.epita.utils.annotation.Pure;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import model.Message;
-import service.EventBusCommunication;
 
 import java.io.IOException;
 import java.net.URI;
 
 public class DomainIndexerConnectionWS extends EventBusCommunication {
 
-    @NotNull private Domain domain;
+    @NotNull
+    private Domain domain;
 
     public DomainIndexerConnectionWS(@NotNull URI uri, @NotNull Domain domain) {
         super(uri);

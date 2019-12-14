@@ -1,15 +1,15 @@
 package com.epita.domain;
 
-import annotation.Mutate;
-import annotation.NotNull;
-import annotation.Pure;
+import com.epita.clientapi.model.Message;
+import com.epita.utils.annotation.Mutate;
 import com.epita.domain.websocket.command.CrawlUrlCommandWS;
 import com.epita.domain.websocket.command.IndexDocumentCommandWS;
 import com.epita.domain.websocket.connection.DomainCrawlerConnectionWS;
 import com.epita.domain.websocket.connection.DomainIndexerConnectionWS;
+import com.epita.utils.annotation.NotNull;
+import com.epita.utils.annotation.Pure;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import model.Message;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
