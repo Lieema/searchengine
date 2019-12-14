@@ -23,11 +23,11 @@ public class Domain {
     public Logger logger = LogManager.getLogger(Domain.class);
 
     private final String crawlerConnection = "ws://localhost:8080/subscribe/broadcast/crawler_connection_event";
-    private final String crawlerCommand = "ws://localhost:8080/subscribe/broadcast/crawl_url_command/";
-    private final String crawlerResult = "ws://localhost:8080/subscribe/broadcast/crawler_result_event/";
+    private final String crawlerCommand = "ws://localhost:8080/subscribe/broadcast/crawl_url_command-";
+    private final String crawlerResult = "ws://localhost:8080/subscribe/broadcast/crawler_result_event";
     private final String indexerConnection = "ws://localhost:8080/subscribe/broadcast/indexer_connection_event";
-    private final String indexerCommand = "ws://localhost:8080/subscribe/broadcast/index_document_command/";
-    private final String indexerResult = "ws://localhost:8080/subscribe/broadcast/indexer_result_event/";
+    private final String indexerCommand = "ws://localhost:8080/subscribe/broadcast/index_document_command-";
+    private final String indexerResult = "ws://localhost:8080/subscribe/broadcast/indexer_result_event";
 
     private final Map<String, CrawlUrlCommandWS> crawlerCommandWS = new HashMap<>();
     private final Queue<String> crawlerAvailable = new LinkedList<>();

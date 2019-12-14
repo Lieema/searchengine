@@ -16,4 +16,6 @@ public class Message {
         this.jsonContent = jsonContent;
         this.senderUID = senderUID;
     }
+
+    public Message() { }
 }

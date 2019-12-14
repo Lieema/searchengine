@@ -4,6 +4,8 @@ package com.epita.clientapi.service;
 import com.epita.clientapi.entity.WebSocketEntity;
 import com.epita.clientapi.helper.ConvertJsonStringObject;
 import com.epita.clientapi.model.Message;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -60,9 +62,14 @@ public abstract class EventBusCommunication {
         } catch (InterruptedException e) {
             logger.error("[EVENTCOM] Start websocket (connection event) failed : " + webSocketEntity.getURI().toString());
         }
-        Message m = new Message(String.class.getName(), uuid, uuid);
-        logger.error("[EVENTCOM] Send connection event for uuid : " + uuid);
-        webSocketEntity.send(ConvertJsonStringObject.convertToJsonString(m));
+        Message m = null;
+        try {
+            m = new Message(String.class.getName(), new ObjectMapper().writeValueAsString(uuid), uuid);
+            logger.info("[EVENTCOM] Send connection event for uuid : " + uuid);
+            webSocketEntity.send(ConvertJsonStringObject.convertToJsonString(m));
+        } catch (JsonProcessingException e) {
+            logger.error("[EVENTCOM] Serialization failed for uuid");
+        }
         try {
             webSocketEntity.closeBlocking();
         } catch (InterruptedException e) {

@@ -15,7 +15,7 @@ public class Main {
         try {
             String uuid = UUID.randomUUID().toString();
             WSCommunication wsCommunication = new WSCommunication(
-                    new URI("ws://localhost:8080/subscribe/broadcast/crawler_url_command/" + uuid),
+                    new URI("ws://localhost:8080/subscribe/broadcast/crawler_url_command-" + uuid),
                     new URI("ws://localhost:8080/subscribe/broadcast/crawler_result_event"),
                     uuid);
             wsCommunication.startWS();

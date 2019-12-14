@@ -25,12 +25,13 @@ public class DefaultTokenizer extends Tokenizer {
     @Mutate
     private void initStopWords() {
         ClassLoader cl = getClass().getClassLoader();
-        File file = new File(cl.getResource("stopwords.txt").getFile());
+        //File file = new File(cl.getResource("stopwords.txt").getFile());
 
         List<String> res = new ArrayList<>();
 
         try {
-            BufferedReader buffer = new BufferedReader(new FileReader(file));
+            InputStream is = cl.getResourceAsStream("stopwords.txt");
+            BufferedReader buffer = new BufferedReader(new InputStreamReader(is));
             String line = buffer.readLine();
             res.add(line);
             while (line != null) {
@@ -50,12 +51,13 @@ public class DefaultTokenizer extends Tokenizer {
     @Mutate
     private void initSynonyms() {
         ClassLoader cl = getClass().getClassLoader();
-        File file = new File(cl.getResource("synonyms.csv").getFile());
+        //File file = new File(cl.getResource("synonyms.csv").getFile());
 
         HashMap<String, String> res = new HashMap<>();
 
         try {
-            BufferedReader buffer = new BufferedReader(new FileReader(file));
+            InputStream is = cl.getResourceAsStream("synonyms.csv");
+            BufferedReader buffer = new BufferedReader(new InputStreamReader(is));
             String line = "";
 
             do {
