@@ -54,14 +54,19 @@ public abstract class EventBusCommunication {
     }
 
     public void sendConnectionEvent(URI uri, String uuid) {
+        WebSocketEntity webSocketEntity = new WebSocketEntity(uri, this);
         try {
-            WebSocketEntity webSocketEntity = new WebSocketEntity(uri, this);
-            Message m = new Message(String.class.getName(), uuid, uuid);
-            logger.error("[EVENTCOM] Send connection event for uuid : " + uuid);
-            webSocketEntity.send(ConvertJsonStringObject.convertToJsonString(m));
+            webSocketEntity.connectBlocking();
+        } catch (InterruptedException e) {
+            logger.error("[EVENTCOM] Start websocket (connection event) failed : " + webSocketEntity.getURI().toString());
+        }
+        Message m = new Message(String.class.getName(), uuid, uuid);
+        logger.error("[EVENTCOM] Send connection event for uuid : " + uuid);
+        webSocketEntity.send(ConvertJsonStringObject.convertToJsonString(m));
+        try {
             webSocketEntity.closeBlocking();
         } catch (InterruptedException e) {
-            logger.error("[EVENTCOM] Websocket closing failed");
+            logger.error("[EVENTCOM] Websocket closing failed : " + webSocketEntity.getURI().toString());
         }
     }
 }
