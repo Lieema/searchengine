@@ -14,7 +14,8 @@ public class Main {
     public static void main(String[] args) {
         RestApi api = new RestApi(8000);
         try {
-            WSCommunication ws = new WSCommunication(new URI("ws://localhost:8080/subscribe/broadcast/retro_index_store_command"));
+            WSCommunication ws = new WSCommunication(new URI("ws://localhost:8080/subscribe/broadcast/index_result_event"));
+            ws.startEventLoop();
         } catch (URISyntaxException e) {
             logger.error("[MAIN] Error parsing URI");
         }
