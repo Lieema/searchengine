@@ -15,31 +15,13 @@ public abstract class EventBusCommunication {
     WebSocketEntity WSSender;
 
     public EventBusCommunication(URI uriReceiver, URI uriSender) {
-        WSReceiver = new WebSocketEntity(uriReceiver);
-        WSSender = new WebSocketEntity(uriSender);
+        WSReceiver = new WebSocketEntity(uriReceiver, this);
+        WSSender = new WebSocketEntity(uriSender, this);
     }
 
     public EventBusCommunication(URI uri) {
-        WSReceiver = new WebSocketEntity(uri);
+        WSReceiver = new WebSocketEntity(uri, this);
         WSSender = null;
-    }
-
-    public void startEventLoop() {
-        while (true) {
-            if (WSReceiver.messageReceivedQueue.size() > 0) {
-                String s = WSReceiver.messageReceivedQueue.poll();
-                Message m = ConvertJsonStringObject.convertToMessage(s);
-                if (m != null)
-                    processMessage(m);
-            }
-            else {
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    logger.error("[EVENTCOM] Thread sleep failed");
-                }
-            }
-        }
     }
 
     public abstract void processMessage(Message m);
@@ -54,7 +36,7 @@ public abstract class EventBusCommunication {
 
     public void sendConnectionEvent(URI uri, String uuid) {
         try {
-            WebSocketEntity webSocketEntity = new WebSocketEntity(uri);
+            WebSocketEntity webSocketEntity = new WebSocketEntity(uri, this);
             Message m = new Message(String.class.getName(), uuid, uuid);
             logger.error("[EVENTCOM] Send connection event for uuid : " + uuid);
             webSocketEntity.send(ConvertJsonStringObject.convertToJsonString(m));
