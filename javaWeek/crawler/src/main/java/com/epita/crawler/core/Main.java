@@ -13,11 +13,12 @@ public class Main {
 
     public static void main(String[] args) {
         try {
-            String uuid = UUID.randomUUID().toString();
-            WSCommunication wsCommunication = new WSCommunication(
-                    new URI("ws://localhost:8080/subscribe/broadcast/crawler_url_command/" + uuid),
+            final String uuid = UUID.randomUUID().toString();
+            final WSCommunication wsCommunication = new WSCommunication(
+                    new URI("ws://localhost:8080/subscribe/broadcast/crawler_url_command-" + uuid),
                     new URI("ws://localhost:8080/subscribe/broadcast/crawler_result_event"),
                     uuid);
+            wsCommunication.startWS();
         } catch (URISyntaxException e) {
             logger.error("[MAIN] Error parsing URI");
         }

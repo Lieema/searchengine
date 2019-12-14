@@ -1,6 +1,8 @@
 package com.epita.domain;
 
 import com.epita.clientapi.model.Message;
+import com.epita.domain.websocket.result.CrawlerResultEventWS;
+import com.epita.domain.websocket.result.IndexerResultEventWS;
 import com.epita.utils.annotation.Mutate;
 import com.epita.domain.websocket.command.CrawlUrlCommandWS;
 import com.epita.domain.websocket.command.IndexDocumentCommandWS;
@@ -23,11 +25,11 @@ public class Domain {
     public Logger logger = LogManager.getLogger(Domain.class);
 
     private final String crawlerConnection = "ws://localhost:8080/subscribe/broadcast/crawler_connection_event";
-    private final String crawlerCommand = "ws://localhost:8080/subscribe/broadcast/crawl_url_command/";
-    private final String crawlerResult = "ws://localhost:8080/subscribe/broadcast/crawler_result_event/";
+    private final String crawlerCommand = "ws://localhost:8080/subscribe/broadcast/crawl_url_command-";
+    private final String crawlerResult = "ws://localhost:8080/subscribe/broadcast/crawler_result_event";
     private final String indexerConnection = "ws://localhost:8080/subscribe/broadcast/indexer_connection_event";
-    private final String indexerCommand = "ws://localhost:8080/subscribe/broadcast/index_document_command/";
-    private final String indexerResult = "ws://localhost:8080/subscribe/broadcast/indexer_result_event/";
+    private final String indexerCommand = "ws://localhost:8080/subscribe/broadcast/index_document_command-";
+    private final String indexerResult = "ws://localhost:8080/subscribe/broadcast/indexer_result_event";
 
     private final Map<String, CrawlUrlCommandWS> crawlerCommandWS = new HashMap<>();
     private final Queue<String> crawlerAvailable = new LinkedList<>();
@@ -37,6 +39,9 @@ public class Domain {
 
     @NotNull private DomainCrawlerConnectionWS crawlerConnectionWS;
     @NotNull private DomainIndexerConnectionWS indexerConnectionWS;
+    @NotNull private CrawlerResultEventWS crawlerResultWS;
+    @NotNull private IndexerResultEventWS indexerResultWS;
+
 
     private List<String> urlChecked = new ArrayList<>();
     private final Integer crawklLimit = 100;
@@ -50,6 +55,8 @@ public class Domain {
         try {
             crawlerConnectionWS = new DomainCrawlerConnectionWS(new URI(crawlerConnection), this);
             indexerConnectionWS = new DomainIndexerConnectionWS(new URI(indexerConnection), this);
+            crawlerResultWS = new CrawlerResultEventWS(new URI(crawlerResult), this);
+            indexerResultWS = new IndexerResultEventWS(new URI(indexerResult), this);
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
@@ -71,6 +78,8 @@ public class Domain {
 
         crawlerConnectionWS.startWS();
         indexerConnectionWS.startWS();
+        crawlerResultWS.startWS();
+        indexerResultWS.startWS();
 
         logger.info("Domain: Start loop");
         while (isRunning) {
@@ -99,8 +108,7 @@ public class Domain {
             resultUrl.append(id);
 
             try {
-                CrawlUrlCommandWS ws = new CrawlUrlCommandWS(
-                        new URI(commandUrl.toString()), new URI(resultUrl.toString()), this);
+                CrawlUrlCommandWS ws = new CrawlUrlCommandWS(new URI(commandUrl.toString()), this);
                 crawlerCommandWS.put(id, ws);
                 crawlerAvailable.add(id);
                 ws.startWS();
@@ -123,8 +131,7 @@ public class Domain {
             resultUrl.append(id);
 
             try {
-                IndexDocumentCommandWS ws = new IndexDocumentCommandWS(
-                        new URI(commandUrl.toString()), new URI(resultUrl.toString()),this);
+                IndexDocumentCommandWS ws = new IndexDocumentCommandWS(new URI(commandUrl.toString()),this);
                 indexerCommandWS.put(id, ws);
                 indexerAvailable.add(id);
                 ws.startWS();
@@ -145,7 +152,7 @@ public class Domain {
             String id = crawlerAvailable.poll();
             CrawlUrlCommandWS ws = crawlerCommandWS.get(id);
             String json = new ObjectMapper().writeValueAsString(url);
-            Message m = new Message(json, String.class.getName(), id);
+            Message m = new Message(String.class.getName(), json, id);
             ws.sendMessage(m);
             logger.info("Domain: Send crawlUrlCommand to crawler " + id + " url = " + url);
 
@@ -167,7 +174,7 @@ public class Domain {
             String id = indexerAvailable.poll();
             IndexDocumentCommandWS ws = indexerCommandWS.get(id);
             String json = new ObjectMapper().writeValueAsString(url);
-            Message m = new Message(json, String.class.getName(), id);
+            Message m = new Message(String.class.getName(), json,id);
             ws.sendMessage(m);
 
             logger.info("Domain: Send indexDocumentCommand to indexer " + id + " url = " + url);
