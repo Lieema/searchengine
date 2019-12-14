@@ -78,7 +78,7 @@ public class Domain {
                 CrawlUrlCommandWS ws = new CrawlUrlCommandWS(
                         new URI(commandUrl.toString()), new URI(resultUrl.toString()), this);
                 crawlerCommandWS.put(id, ws);
-                crawlerAvailable.add(ws);
+                crawlerAvailable.add(id);
                 ws.startEventLoop();
 
             } catch (URISyntaxException e) {
@@ -100,7 +100,7 @@ public class Domain {
                 IndexDocumentCommandWS ws = new IndexDocumentCommandWS(
                         new URI(commandUrl.toString()), new URI(resultUrl.toString()),this);
                 indexerCommandWS.put(id, ws);
-                indexerAvailable.add(ws);
+                indexerAvailable.add(id);
                 ws.startEventLoop();
 
             } catch (URISyntaxException e) {
@@ -135,13 +135,11 @@ public class Domain {
         }
     }
 
-
     @Mutate
     public void updateCrawlerQueue(@NotNull final String id) {
 
         CrawlUrlCommandWS ws = crawlerCommandWS.get(id);
         crawlerAvailable.add(id);
-
     }
 
     @Mutate
