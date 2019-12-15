@@ -22,7 +22,7 @@ public class Main {
             hiver.addProvider(new Singleton<>(WSCommunication.class,
                     new WSCommunication(new URI("ws://localhost:8080/subscribe/broadcast/index_result_event"))));
 
-            hiver.instanceOf(RestApi.class).get().setRetroIndex(ws.retroIndex);
+            hiver.instanceOf(RestApi.class).get().setRetroIndex(hiver.instanceOf(WSCommunication.class).get().retroIndex);
             hiver.instanceOf(WSCommunication.class).get().startWS();
 
         } catch (URISyntaxException e) {
