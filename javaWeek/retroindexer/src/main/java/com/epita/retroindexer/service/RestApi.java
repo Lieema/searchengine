@@ -13,6 +13,7 @@ import com.epita.tfidf.service.dependencies.vectorizer.DefaultVectorizer;
 import com.epita.tfidf.service.queryService.Query;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class RestApi extends Query {
     Logger logger = LogManager.getLogger(RestApi.class);
@@ -48,7 +49,7 @@ public class RestApi extends Query {
         logger.info("[REST] Process done : " + documents.size() + " documents found");
         ObjectMapper mapper = new ObjectMapper();
         try {
-            return mapper.writeValueAsString(documents);
+            return mapper.writeValueAsString(documents.stream().map(d -> d.link).collect(Collectors.toList()));
         } catch (JsonProcessingException e) {
             logger.error("Failed to serialize list of documents");
             return null;

@@ -18,7 +18,9 @@ public class Token {
         positions = new ArrayList<>();
     }
 
-    @Pure
+    public Token() {
+    }
+
     @Override
     public String toString() {
         return "Token{" +

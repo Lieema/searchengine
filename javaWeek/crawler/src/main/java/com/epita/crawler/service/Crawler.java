@@ -36,10 +36,16 @@ public class Crawler {
             final Elements links = doc.select("a[href]");
             logger.debug("[CRAWLER] Found " + foundUrls.size() + " links");
 
+            int count = 0;
             for (Element link : links) {
+                if (count > 100)
+                    return;
                 final String linkUrl = link.attr("abs:href");
                 logger.trace("[CRAWLER] Add link : " + linkUrl);
-                foundUrls.add(linkUrl);
+                if (!linkUrl.contains("#") && !linkUrl.contains(".jpg") && !linkUrl.contains(".svg") && !foundUrls.contains(linkUrl)) {
+                    foundUrls.add(linkUrl);
+                    count++;
+                }
             }
         } catch (IOException e) {
             logger.error("[CRAWLER] Fail to load html document");

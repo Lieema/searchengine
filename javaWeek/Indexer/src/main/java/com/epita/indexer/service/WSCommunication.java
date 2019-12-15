@@ -42,6 +42,10 @@ public class WSCommunication extends EventBusCommunication {
     public void sendDocument(Document document) {
         String content = null;
         try {
+            //document.html = document.html.substring(0, Math.min(1000, document.html.length()));
+            //document.text = document.text.substring(0, Math.min(1000, document.text.length()));
+            document.html = "";
+            document.text = "";
             content = new ObjectMapper().writeValueAsString(document);
             String className = Document.class.getName();
             sendMessage(new Message(className, content, uuid));

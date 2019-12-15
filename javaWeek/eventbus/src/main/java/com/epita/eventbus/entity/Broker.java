@@ -5,8 +5,15 @@ import io.javalin.websocket.WsConnectContext;
 import io.javalin.websocket.WsMessageContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.eclipse.jetty.io.ByteBufferPool;
+import org.eclipse.jetty.io.MappedByteBufferPool;
+import org.eclipse.jetty.websocket.api.WebSocketPolicy;
+import org.eclipse.jetty.websocket.server.WebSocketServerFactory;
+import org.eclipse.jetty.websocket.servlet.WebSocketServletFactory;
 
 import java.util.HashMap;
+import java.util.concurrent.Executor;
+import java.util.function.Consumer;
 
 public class Broker {
     public Logger logger = LogManager.getLogger(Broker.class);
@@ -15,7 +22,9 @@ public class Broker {
     Javalin app;
 
     public Broker(int port) {
-        this.app = Javalin.create().start(port);
+        this.app = Javalin.create(config ->
+            config.wsFactoryConfig(wsfc -> wsfc.getPolicy().setMaxTextMessageSize(4194304))
+        ).start(port);
         this.topics = new HashMap<>();
 
         initBroadcastWS();
@@ -58,7 +67,10 @@ public class Broker {
                     topic.clients.remove(ctx);
                 }
             });
-            ws.onError(ctx -> logger.error("[BROADCAST] Client error : " + ctx.getSessionId()));
+            ws.onError(ctx -> {
+                logger.error("[BROADCAST][" + ctx.pathParam("topic") + "] Client error : " + ctx.getSessionId());
+                logger.error("[BROADCAST][" + ctx.pathParam("topic") + "] Error :" + ctx.error().getMessage());
+            });
         });
     }
 
@@ -93,8 +105,10 @@ public class Broker {
                     topic.clients.remove(ctx);
                 }
             });
-            ws.onError(ctx -> logger.error("[PUBLISH] Client error : " + ctx.getSessionId()));
-        });
+            ws.onError(ctx -> {
+                logger.error("[PUBLISH][" + ctx.pathParam("topic") + "] Client error : " + ctx.getSessionId());
+                logger.error("[PUBLISH][" + ctx.pathParam("topic") + "] Error :" + ctx.error().getMessage());
+            });        });
     }
 
     private void brokerEvents() throws InterruptedException {

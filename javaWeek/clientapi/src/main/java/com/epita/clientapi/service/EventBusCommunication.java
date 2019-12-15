@@ -48,7 +48,9 @@ public abstract class EventBusCommunication {
     public abstract void processMessage(Message m);
 
     public void sendMessage(Message message) {
+        logger.info("Event com : will send message");
         String json = ConvertJsonStringObject.convertToJsonString(message);
+        logger.info("final message to send : " + json);
         if (WSSender == null)
             WSReceiver.send(json);
         else

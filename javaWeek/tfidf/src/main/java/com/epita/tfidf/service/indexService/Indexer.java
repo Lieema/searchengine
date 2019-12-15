@@ -41,6 +41,7 @@ public abstract class Indexer extends Logger {
 
         try {
             res.html = Jsoup.connect(link).get().html();
+            //res.html = res.html.substring(0, Math.min(5000, res.html.length()));
         } catch (IOException e) {
             logger.error("Wrong url " + link);
             throw new RuntimeException("Wrong url");

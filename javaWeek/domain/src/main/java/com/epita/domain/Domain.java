@@ -25,11 +25,11 @@ public class Domain {
     public Logger logger = LogManager.getLogger(Domain.class);
 
     private final String crawlerConnection = "ws://localhost:8080/subscribe/broadcast/crawler_connection_event";
-    private final String crawlerCommand = "ws://localhost:8080/subscribe/broadcast/crawl_url_command-";
+    private final String crawlerCommand = "ws://localhost:8080/subscribe/broadcast/crawler_url_command-";
     private final String crawlerResult = "ws://localhost:8080/subscribe/broadcast/crawler_result_event";
     private final String indexerConnection = "ws://localhost:8080/subscribe/broadcast/indexer_connection_event";
     private final String indexerCommand = "ws://localhost:8080/subscribe/broadcast/index_document_command-";
-    private final String indexerResult = "ws://localhost:8080/subscribe/broadcast/indexer_result_event";
+    private final String indexerResult = "ws://localhost:8080/subscribe/broadcast/index_result_event";
 
     private final Map<String, CrawlUrlCommandWS> crawlerCommandWS = new HashMap<>();
     private final Queue<String> crawlerAvailable = new LinkedList<>();
@@ -81,7 +81,7 @@ public class Domain {
         crawlerResultWS.startWS();
         indexerResultWS.startWS();
 
-        logger.info("Domain: Start loop");
+        logger.info("[Domain] Start loop");
         while (isRunning) {
 
             if (urlToCrawl.size() != 0 && crawlerAvailable.size() != 0) {
@@ -93,8 +93,13 @@ public class Domain {
                 String url = urlToIndex.poll();
                 indexDocument(url);
             }
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                logger.error("[DOMAIN] Error in thread sleep");
+            }
         }
-        logger.info("Domain: Stop loop");
+        logger.info("[Domain] Stop loop");
     }
 
     @Mutate
@@ -112,10 +117,10 @@ public class Domain {
                 crawlerCommandWS.put(id, ws);
                 crawlerAvailable.add(id);
                 ws.startWS();
-                logger.info("Domain: add crawler id = " + id);
+                logger.info("[Domain] Add crawler : " + id);
 
             } catch (URISyntaxException e) {
-                logger.error("Domain: ERROR: CANNOT CONVERT STRING URL TO URI");
+                logger.error("[Domain] ERROR: CANNOT CONVERT STRING URL TO URI");
             }
         }
     }
@@ -135,16 +140,15 @@ public class Domain {
                 indexerCommandWS.put(id, ws);
                 indexerAvailable.add(id);
                 ws.startWS();
-                logger.info("Domain: add indexer id = " + id);
+                logger.info("[Domain] Add indexer : " + id);
             } catch (URISyntaxException e) {
-                logger.error("Domain: ERROR: CANNOT CONVERT STRING URL TO URI");
+                logger.error("[Domain] ERROR: CANNOT CONVERT STRING URL TO URI");
             }
         }
     }
 
     @Pure
     private void crawlUrl(@NotNull final String url) {
-
         try {
             if (urlChecked.contains(url))
                 return;
@@ -154,7 +158,7 @@ public class Domain {
             String json = new ObjectMapper().writeValueAsString(url);
             Message m = new Message(String.class.getName(), json, id);
             ws.sendMessage(m);
-            logger.info("Domain: Send crawlUrlCommand to crawler " + id + " url = " + url);
+            logger.info("[Domain] Send crawlUrlCommand to crawler " + id + " url = " + url);
 
             addUrlToIndex(url);
 
@@ -177,7 +181,7 @@ public class Domain {
             Message m = new Message(String.class.getName(), json,id);
             ws.sendMessage(m);
 
-            logger.info("Domain: Send indexDocumentCommand to indexer " + id + " url = " + url);
+            logger.info("[Domain] Send indexDocumentCommand to indexer " + id + " url = " + url);
 
 
         } catch (JsonProcessingException e) {
@@ -207,13 +211,13 @@ public class Domain {
             if (urlChecked.size() >= crawklLimit)
                 break;
             urlToCrawl.add(url);
-            logger.info("Url " + url + " has to be crawled");
+            logger.trace("Url " + url + " has to be crawled");
         }
     }
 
     @Mutate
     public void addUrlToIndex(@NotNull final String url) {
             urlToIndex.add(url);
-            logger.info("Url " + url + " has to be indexed");
+            logger.trace("Url " + url + " has to be indexed");
     }
 }
